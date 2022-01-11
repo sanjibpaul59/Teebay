@@ -37,3 +37,19 @@ I am familiar with react but Django and Postgres was new to me when I started th
 
 To startwith, I installed pipenv in my machine and then went by installing venv and django respectively.
 Created the django project by `django-admin startproject teebaydmin .` and inspected the files and folders to understand what's goin on.  
+
+After that I created the `teebaykend` app by running `python manage.py startapp teebaykend` from the command line.  Created data models in `models.py`, determined the relationship between the models. Django Rest Framework provides `serializers` which helps to convert the queryset and complex data types to native Python datatypes which can be rendered easily. `urls.py` files contains the urls for the backend app and in the `api.py` I created the viewsets. 
+
+Used Proxy in `package.json` to avoid Cross origin policy and whitelisted `localhost:3000` in the `settings.py` to communicate with the fronend app.
+
+Created a new app named frontend in the root directory issuing `python manage.py startapp frontend` then `npx create-react-app` to implement the front-end application.
+
+### Challenges faced
+I misinterpreted the goal at the very first place when I saw the last line of the Instruction. Therefore I choose the harder approach. I would say, I went for excellence but I totally missed the basics.
+
+I went for Containerized application at the first place which made thing tougher. Eventually I followed the simple approach at the very last minute. 
+
+The project is not complete, not even the preliminary features. There is some components for Sign In and Register and Listing out the Products, However, The major api's are ready.  
+It needs time to be in a standard stage. 
+
+There were some issues with `Semantic UI React` with webpack issues. I had to choose alternate options which cost me more time from very limited time.

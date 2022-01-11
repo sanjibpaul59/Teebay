@@ -9,5 +9,10 @@ Check the version using `python3 --version`
 Then using `pip3 install pipenv` you need to install the virtual environment. Furthermore, `pipenv` will be used to install [Django](https://www.djangoproject.com/). 
 
 The command list goes as,
-`pip3 install pipenv`
-`pipenv --venv` to see the version of venv.
+```
+pip3 install pipenv
+pipenv --venv 
+pipenv shell
+pipenv install django djangorestframework psycopg2-binary
+
+```

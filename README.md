@@ -39,5 +39,5 @@ Choose the Python Interpreter by pressing `Ctrl+Shift+P`.
 After installation of the required packages, run `python manage.py makemigration` followed by `pyhton manage.py migrate` to migrate the models to database.  
 Finally run `python manage.py runserver` to start the backend.  
 Then `cd client` will take you to the front-end part. There `npm i` and `npm start` command will startup the front-end app.
-Frontend will run locally at [](http://localhost:3000) and backend apis will be found at [](http://127.0.0.1:8000)
+Frontend will run locally at Localhost [http://localhost:3000](http://localhost:3000) and backend apis will be found at Api Root [http://127.0.0.1:8000](http://127.0.0.1:8000)
 

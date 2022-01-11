@@ -1,19 +1,5 @@
 import React, { Component } from 'react'
-import {
-  Form,
-  FormGroup,
-  Input,
-  Label,
-  Button,
-  Row,
-  Col,
-  Card,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  CardText,
-  Container,
-} from 'reactstrap'
+import { Form, Button, Row, Col, Card, Container } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 class SignIn extends Component {
   render() {
@@ -22,7 +8,7 @@ class SignIn extends Component {
         <Row className="mt-5">
           <Col
             md={{
-              offset: 3,
+              offset: 4,
               size: 6,
             }}
             sm="12"
@@ -30,42 +16,33 @@ class SignIn extends Component {
             <Card
               body
               outline
-              style={{ width: '25rem' }}
+              style={{ width: '20rem', height: '18rem' }}
               className="text-center"
             >
-              <CardText>
+              <Card.Text>
                 <Form>
-                  <FormGroup row>
-                    <Col sm={12}>
-                      <Input
-                        id="exampleEmail"
-                        name="email"
-                        placeholder="Email"
-                        type="email"
-                      />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col sm={12}>
-                      <Input
-                        id="examplePassword"
-                        name="password"
-                        placeholder="Password"
-                        type="password"
-                      />
-                    </Col>
-                  </FormGroup>
+                  <Form.Group className="my-3" controlId="formBasicEmail">
+                    <Form.Control type="email" placeholder="Email" />
+                  </Form.Group>
+
+                  <Form.Group className="my-3" controlId="formBasicPassword">
+                    <Form.Control type="password" placeholder="Password" />
+                  </Form.Group>
                 </Form>
-              </CardText>
-              <CardTitle tag="h5">
+              </Card.Text>
+              <Card.Title tag="h5" className="mt-5">
                 <Button>Sign In</Button>
-              </CardTitle>
-              <CardSubtitle className="text-center">
+              </Card.Title>
+              <Card.Subtitle className="text-center mt-3 mb-2">
                 Don't have an account?{' '}
-                <Link to="/signup" className="btn-light">
+                <Link
+                  to="/signup"
+                  variant="link"
+                  style={{ textDecoration: 'none' }}
+                >
                   Register
                 </Link>
-              </CardSubtitle>
+              </Card.Subtitle>
             </Card>
           </Col>
         </Row>

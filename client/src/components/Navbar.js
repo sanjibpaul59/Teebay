@@ -1,57 +1,43 @@
 import React, { Component } from 'react'
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarToggler,
-  Collapse,
-  NavItem,
-  NavLink,
-  Nav,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText,
-} from 'reactstrap'
 import { Link } from 'react-router-dom'
+import { Navbar, Container, Nav, NavDropdown, Button } from 'react-bootstrap'
+
 class TeebayNavbar extends Component {
   render() {
     return (
       <div>
-        <Navbar color="light" expand="md" light>
-          <NavbarBrand>Teebay</NavbarBrand>
-          <NavbarToggler onClick={function noRefCheck() {}} />
-          <Collapse navbar>
-            <Nav className="me-auto" navbar>
-              <NavItem>
-                <NavLink>
-                  <Link to="/products">Products</Link>
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink>
-                  <Link to={'/about'}>About</Link>
-                </NavLink>
-              </NavItem>
-              <UncontrolledDropdown inNavbar nav>
-                <DropdownToggle caret nav>
-                  Account
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>
-                    <NavLink>
-                      <Link to={'/signin'}>Sign In</Link>
-                    </NavLink>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <NavLink>
-                      <Link to={'/signup'}>Sign Up</Link>
-                    </NavLink>
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
-          </Collapse>
+        <Navbar bg="light" expand="lg">
+          <Container>
+            <Navbar.Brand>Teebay</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+                <Nav.Link as={Button} variant="light">
+                  {' '}
+                  <Link to={'/'} style={{ textDecoration: 'none' }}>
+                    Home
+                  </Link>{' '}
+                </Nav.Link>
+                <Nav.Link as={Button} variant="light">
+                  <Link to={'/products'} style={{ textDecoration: 'none' }}>
+                    Products
+                  </Link>
+                </Nav.Link>
+                <NavDropdown title="Account" id="basic-nav-dropdown">
+                  <NavDropdown.Item as={Button}>
+                    <Link to={'/signin'} style={{ textDecoration: 'none' }}>
+                      Sign In
+                    </Link>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Button}>
+                    <Link to={'/signup'} style={{ textDecoration: 'none' }}>
+                      Sign Up
+                    </Link>
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
         </Navbar>
       </div>
     )

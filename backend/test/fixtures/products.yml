@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  selling_price: 9.99
+  hourly_rent_amount: 9.99
+  daily_rent_amount: 9.99
+  user: one
+
+two:
+  title: MyString
+  description: MyText
+  selling_price: 9.99
+  hourly_rent_amount: 9.99
+  daily_rent_amount: 9.99
+  user: two

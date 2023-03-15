@@ -12,7 +12,7 @@ class ProductsController < ApplicationController
   def show
     @product = Product.find(params[:id])
     @owner = @product.user
-    render json: @product, @owner
+    render json: @product
   end
 
   # POST /products

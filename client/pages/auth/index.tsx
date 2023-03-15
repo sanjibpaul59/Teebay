@@ -34,7 +34,7 @@ export default function Login() {
   })
 
   return (
-    <Container mt={200}>
+    <Container mt={100}>
       <Title align="center" order={2}>
         SIGN IN
       </Title>

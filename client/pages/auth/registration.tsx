@@ -31,13 +31,20 @@ export default function Registration() {
       email: '',
       phone_number: '',
       password: '',
-    confirm_password: '',
-      created_at: new Date().toISOString()
+      confirm_password: '',
+      created_at: new Date().toISOString(),
     },
 
     // Client-side Form validation
     validate: {
+      first_name: (value) =>
+        value.length < 1 ? 'Provide a name to continue' : null,
+      // last_name: (value) => value.length <1 ? "Name should not be empty": null,
+      address: (value) =>
+        value.length < 1 ? 'Please enter a valid address' : null,
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
+      phone_number: (val) =>
+        /^(?:\+?88)?01[13-9]\d{8}$/.test(val) ? null : 'Invalid phone number',
       password: (val) =>
         val.length <= 6
           ? 'Password should include at least 6 characters'
@@ -47,7 +54,7 @@ export default function Registration() {
   })
 
   return (
-    <Container mt={200}>
+    <Container mt={100}>
       <Title align="center" order={2}>
         SIGN UP
       </Title>

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import axios from 'axios'
 import Head from 'next/head'
 import { Card, Center, Text, Badge, Button, Group } from '@mantine/core'
-
+import Product from '@/components/Product'
 function ProductList({products} : any) {
  return (
    <>
@@ -11,12 +11,14 @@ function ProductList({products} : any) {
      </Head>
      <div>
        <Center h={100}>
-         <h1>All Products</h1>
+         <h1>ALL PRODUCTS</h1>
        </Center>
        <ul>
          {products.map((product: any) => (
            <li key={product.id}>
-             <h1>{ product.title}</h1>
+             <Link href={`/products/${product.id}`}>
+               <Product product={product} />
+              </Link>
            </li>
          ))}
        </ul>

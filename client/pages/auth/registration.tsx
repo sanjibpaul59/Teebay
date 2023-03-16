@@ -2,19 +2,17 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm, matchesField } from '@mantine/form'
 import {
-  Flex,
   Grid,
   Container,
-  Box,
   Card,
   TextInput,
   Group,
   Button,
   PasswordInput,
   Title,
- Paper,
- Text,
-  Anchor
+  Text,
+  Anchor,
+  NavLink
 } from '@mantine/core'
 
 export default function Registration() {
@@ -61,7 +59,11 @@ export default function Registration() {
       <Container mt={20} size="30rem" mx="auto" align-content="center">
         <Card shadow="sm" padding="lg" withBorder>
           {/* <Box maw={400} mx="auto"> */}
-          <form onSubmit={registrationForm.onSubmit((values) => console.log(values))}>
+          <form
+            onSubmit={registrationForm.onSubmit((values) =>
+              console.log(values)
+            )}
+          >
             <Grid>
               <Grid.Col md={6} lg={6}>
                 <TextInput
@@ -122,23 +124,17 @@ export default function Registration() {
             />
 
             <Group position="center" mt="xl">
-              <Button type="submit">REGISTER</Button>
+              <Button color="violet" type="submit">
+                REGISTER
+              </Button>
             </Group>
           </form>
           <Text ta="center" mt="md">
             Already have an account?{' '}
-            {/* <Anchor<'a'>
-              href="/auth"
-              weight={700}
-              onClick={(event) => event.preventDefault()}
-            >
-              Sign in
-            </Anchor> */}
             <Link href="/auth" legacyBehavior>
-              <a>Sign in</a>
+              <Anchor fz="md" fw="bold">Sign In</Anchor>
             </Link>
           </Text>
-          {/* </Box> */}
         </Card>
       </Container>
     </Container>

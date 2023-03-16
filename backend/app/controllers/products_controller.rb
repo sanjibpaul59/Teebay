@@ -4,14 +4,12 @@ class ProductsController < ApplicationController
   # GET /products
   def index
     @products = Product.all
-
     render json: @products
   end
 
   # GET /products/1
   def show
     @product = Product.find(params[:id])
-    @owner = @product.user
     render json: @product
   end
 

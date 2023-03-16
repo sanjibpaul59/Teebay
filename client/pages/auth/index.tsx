@@ -56,24 +56,20 @@ export default function Login() {
             />
 
             <Group position="center" mt="xl">
-              <Button type="submit">LOGIN</Button>
+              <Button type="submit" color="violet">
+                LOGIN
+              </Button>
             </Group>
           </form>
 
           <Text ta="center" mt="md">
             Don&apos;t have an account?{' '}
             <Link href="/auth/registration" legacyBehavior>
-              <a>Signup</a>
+              <Anchor fz="md" fw="bold">
+                Signup
+              </Anchor>
             </Link>
-            {/* <Anchor<'a'>
-              href="/auth/registration"
-              weight={700}
-              onClick={(event) => event.preventDefault()}
-            >
-              Signup
-            </Anchor> */}
           </Text>
-          {/* </Box> */}
         </Card>
       </Container>
     </Container>

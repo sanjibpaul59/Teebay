@@ -2,6 +2,13 @@ class SessionsController < ApplicationController
   def new
   end
 
+  def show
+    session_data = {
+      user_id: session[:user_id]
+    }
+    render json: session_data
+  end
+
   def create
     user = User.find_by(email: params[:email])
     if user && user.password == params[:password]

@@ -1,21 +1,20 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import {
   Stepper,
   Button,
   Group,
   TextInput,
-  PasswordInput,
-  Code,
   Textarea,
- MultiSelect,
-  Grid,
+  MultiSelect,
   Select,
-  Container
+  Container,
+  NumberInput
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 
 const ProductAddForm = () => {
-
+ const router = useRouter()
  const [ active, setActive ] = useState(0)
  // initial values for product add form
  const form = useForm({
@@ -27,32 +26,32 @@ const ProductAddForm = () => {
    rent_type: '',
    categories: [],
   },
-  // validate: (values) => {
-  //  if (active === 0) {
-  //   if (!values.title) {
-  //    return { title: 'Product title is required' }
-  //   }
-  //  }
-  //  if (active === 1) {
-  //   if (!values.categories) {
-  //    return { categories: 'Product categories is required' }
-  //   }
-  //  }
-  //  if (active === 2) {
-  //   if (!values.description) {
-  //    return { description: 'Product description is required' }
-  //   }
-  //  }
-  //  if (active === 3) {
-  //   if (!values.selling_price) {
-  //    return { selling_price: 'Product selling price is required' }
-  //   }
-  //   if (values.rent_amount && !values.rent_type) {
-  //    return { rent_type: 'Product rent type is required' }
-  //   }
-  //  }
-  //  return {}
-  // }
+  validate: (values) => {
+   if (active === 0) {
+    if (!values.title) {
+     return { title: 'Product title is required' }
+    }
+   }
+   if (active === 1) {
+    if (!values.categories) {
+     return { categories: 'Product categories is required' }
+    }
+   }
+   if (active === 2) {
+    if (!values.description) {
+     return { description: 'Product description is required' }
+    }
+   }
+   if (active === 3) {
+    if (!values.selling_price) {
+     return { selling_price: 'Product selling price is required' }
+    }
+    if (values.rent_amount && !values.rent_type) {
+     return { rent_type: 'Product rent type is required' }
+    }
+   }
+   return {}
+  }
  })
 
    const nextStep = () =>
@@ -65,6 +64,7 @@ const ProductAddForm = () => {
 
    const prevStep = () =>
      setActive((current) => (current > 0 ? current - 1 : current))
+  
    const product_categories = [
      { value: 'electronics', label: 'Electronics' },
      { value: 'furniture', label: 'Furniture' },
@@ -77,12 +77,30 @@ const ProductAddForm = () => {
     { value: 'hourly', label: 'per hr' },
     { value: 'daily', label: 'per day' },
   ]
- const handleSubmit = () => { 
-   // e: React.FormEvent<HTMLFormElement>
-   // e.preventDefault()
-   console.log('product add form submitted')
-   console.log(form.values)
-  }
+  const handleSubmit = async () => {
+    const requestBody = {
+      title: form.values.title,
+      description: form.values.description,
+      selling_price: form.values.selling_price,
+      rent_amount: form.values.rent_amount,
+      rent_type: form.values.rent_type,
+      user_id: 1,
+    }
+   const res = await fetch('http://localhost:3000/products', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json',
+     },
+     body: JSON.stringify(requestBody),
+   })
+
+   if (res.ok) {
+     router.push('/products')
+   } else {
+     console.error('Error creating product')
+   }
+ }
+
  return (
    <>
      <Stepper active={active} breakpoint="sm">
@@ -101,13 +119,13 @@ const ProductAddForm = () => {
        </Stepper.Step>
        <Stepper.Step label="Product Price">
          <Group mt={30} position="center">
-           <TextInput
+           <NumberInput
              placeholder="Purchase Price"
              {...form.getInputProps('selling_price')}
            />
          </Group>
          <Group position="center">
-           <TextInput
+           <NumberInput
              mt={50}
              placeholder="Rent Price"
              {...form.getInputProps('rent_amount')}

@@ -6,15 +6,17 @@ import {
   Text,
   TypographyStylesProvider,
 } from '@mantine/core'
+import {MdDelete} from 'react-icons/md'
 
 export default function Product({product}: any) {
  return (
    <Container mt={20} size="40rem" mx="auto" align-content="center">
      <Card shadow="sm" padding="lg" withBorder>
-       <Group>
+       <Group position='apart'>
          <Text fz="xl">
            {product.title}
          </Text>
+         <Text fz="xl"><MdDelete/></Text>
        </Group>
          <Text fw={500} color="dimmed">
            Categories: Category Names Here

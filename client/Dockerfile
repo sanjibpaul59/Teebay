@@ -11,11 +11,11 @@ COPY package-lock.json /teebay/client/package-lock.json
 RUN npm install-clean
 COPY . /teebay/client
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "dev" ]
 
-FROM development AS builder
+# FROM development AS builder
 
-RUN npm run build
+# RUN npm run build
 
 FROM development as dev-envs
 RUN <<EOF
@@ -30,7 +30,7 @@ usermod -aG docker vscode
 EOF
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "start" ]
 
 # FROM nginx:1.13-alpine
 

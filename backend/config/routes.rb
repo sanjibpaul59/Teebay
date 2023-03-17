@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   resources :users do
     get 'products', to: 'users#products'
   end
+  post '/products/:product_id/categories/:category_id', to: 'product_categories#create'
+  patch '/products/:product_id/categories/:category_id', to: 'product_categories#update'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

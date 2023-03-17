@@ -6,7 +6,7 @@ class AuthController < ApplicationController
     session[:user_id] = user.id
     render json: {user: user}
    else
-     render json: {errors: "Invalid username or password"}
+     render json: {errors: "Invalid email or password"}
    end
  end
 

@@ -26,8 +26,9 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1
   def update
+    @product = Product.find(params[:id])
     if @product.update(product_params)
-      render json: @product
+      render json: @product, status: :ok
     else
       render json: @product.errors, status: :unprocessable_entity
     end
@@ -35,8 +36,11 @@ class ProductsController < ApplicationController
 
   # DELETE /products/1
   def destroy
+    @product = Product.find(params[:id])
     @product.destroy
+    head :no_content
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

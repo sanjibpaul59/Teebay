@@ -1,12 +1,13 @@
 import { Product} from "../../interfaces/Product"
 import { useForm } from '@mantine/form'
-import { Container, TextInput, Group, Button, Textarea, Grid, Select, MultiSelect} from "@mantine/core"
+import { Container, TextInput, Group, Button, Textarea, Grid, Select, MultiSelect, NumberInput} from "@mantine/core"
 
-
+import { useRouter } from 'next/router'
 interface ProductEditProps { 
  product: Product
 }
 const ProductEditForm = ({ product }: ProductEditProps) => {
+  const router = useRouter()
  const editForm = useForm({
   initialValues: {
    title: product.title,
@@ -33,11 +34,28 @@ const ProductEditForm = ({ product }: ProductEditProps) => {
   {value: 'toys', label: 'Toys'},
  ]
 
- const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => { 
-  e.preventDefault()
-  console.log('product edit form submitted')
-  console.log(editForm.values)
- }
+  const handleSubmit = async () => {
+    const requestBody = {
+      title: editForm.values.title,
+      description: editForm.values.description,
+      selling_price: editForm.values.selling_price,
+      rent_amount: editForm.values.rent_amount,
+      rent_type: editForm.values.rent_type,
+    }
+    const res = await fetch(`http://localhost:3000/products/${product.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    })
+
+    if (res.ok) {
+      router.push('/products')
+    } else {
+      console.error('Error Updating product')
+    }
+  }
  return (
    <Container mt={100}>
      <Container mt={20} mx="auto" align-content="center">
@@ -62,7 +80,7 @@ const ProductEditForm = ({ product }: ProductEditProps) => {
          />
          <Grid mt={30}>
            <Grid.Col md={4} lg={4}>
-             <TextInput
+             <NumberInput
                label="Price"
                placeholder="Price"
                {...editForm.getInputProps('selling_price')}
@@ -70,16 +88,16 @@ const ProductEditForm = ({ product }: ProductEditProps) => {
            </Grid.Col>
            <Grid.Col md={8} lg={8}>
              <Group position="apart">
-               <TextInput
+               <NumberInput
                  label="Rent"
                  placeholder="Rent Amount"
                  {...editForm.getInputProps('rent_amount')}
                />
                <Select
-         label=""
-         placeholder="per hr"
-         data={rent_types}
-         {...editForm.getInputProps('rent_type')}
+                label=""
+                placeholder="per hr"
+                data={rent_types}
+                {...editForm.getInputProps('rent_type')}
                />
              </Group>
            </Grid.Col>

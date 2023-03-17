@@ -3,7 +3,7 @@
 one:
   product: one
   seller: one
-  customer: one
+  buyer: one
   transaction_type: MyString
   rent_start_date: 2023-03-13 02:22:07
   rent_end_date: 2023-03-13 02:22:07
@@ -13,7 +13,7 @@ one:
 two:
   product: two
   seller: two
-  customer: two
+  buyer: two
   transaction_type: MyString
   rent_start_date: 2023-03-13 02:22:07
   rent_end_date: 2023-03-13 02:22:07

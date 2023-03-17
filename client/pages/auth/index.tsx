@@ -1,81 +1,31 @@
-import Link from "next/link"
 import {useRouter} from 'next/router'
-import { useForm } from "@mantine/form"
-import {
-  Flex,
-  Container,
-  Box,
-  Card,
-  TextInput,
-  Group,
-  Button,
-  PasswordInput,
-  Title,
-  Paper,
-  Text,
-  Anchor,
-} from '@mantine/core'
+import { useState } from 'react'
+import axios from "axios"
+import LoginForm from "@/components/authentication/LoginForm"
 
+interface LoginResponse{
+  error?: string
+}
 
 export default function Login() {
   const router = useRouter()
-  const handleSubmit = () => {
-    // e.preventDefault()
-    router.push("/products")
-  }
-  const loginForm = useForm({
-    initialValues: { email: '', password: '' },
+  const [ error, setError ] = useState<string | null>(null)
 
-    // Client-side Form validation
-    validate: {
-      email: (value:string) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-      password: (value:string) => (value.length < 6 ? 'Password must have at least 6 characters': null)
-    },
-  })
+  const handleLogin = async (email: string, password: string) => {
+    const res = await axios.post("http://localhost:3000/login", {email, password})
+    const data: LoginResponse = await res.data
+    if (res.status === 200) {
+      router.push({
+        pathname: '/products/user-products',
+        query: { userId: res.data.user["id"] },
+      })
+    }
+    else {
+      setError(data.error || 'Something went wrong')
+    }
+   }
 
   return (
-    <Container mt={100}>
-      <Title align="center" order={2}>
-        SIGN IN
-      </Title>
-      <Container mt={20} size="30rem" mx="auto" align-content="center">
-        <Card shadow="sm" padding="lg" withBorder>
-          {/* <Box maw={400} mx="auto"> */}
-          <form onSubmit={loginForm.onSubmit(handleSubmit)}>
-            <TextInput
-              withAsterisk
-              mt={30}
-              placeholder="Email"
-              {...loginForm.getInputProps('email')}
-            />
-            <PasswordInput
-              withAsterisk
-              mt={15}
-              placeholder="Password"
-              {...loginForm.getInputProps('password')}
-            />
-
-            <Group position="center" mt="xl">
-              <Button type="submit">LOGIN</Button>
-            </Group>
-          </form>
-
-          <Text ta="center" mt="md">
-            Don&apos;t have an account?{' '}
-            <Link href="/auth/registration" legacyBehavior>
-              <a>Signup</a>
-            </Link>
-            {/* <Anchor<'a'>
-              href="/auth/registration"
-              weight={700}
-              onClick={(event) => event.preventDefault()}
-            >
-              Signup
-            </Anchor> */}
-          </Text>
-          {/* </Box> */}
-        </Card>
-      </Container>
-    </Container>
+    <LoginForm  onSubmit={handleLogin} error={error} />
   )
 }

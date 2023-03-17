@@ -38,6 +38,17 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  def products
+    user_id = params[:user_id]
+    if user_id.present?
+      @user = User.find(user_id)
+      @products = @user.products
+      render json: @products
+    else
+      render json: { error: "User id is required" }, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

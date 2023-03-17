@@ -4,14 +4,14 @@ one:
   title: MyString
   description: MyText
   selling_price: 9.99
-  hourly_rent_amount: 9.99
-  daily_rent_amount: 9.99
+  rent_amount: 9.99
+  rent_type: hourly
   user: one
 
 two:
   title: MyString
   description: MyText
   selling_price: 9.99
-  hourly_rent_amount: 9.99
-  daily_rent_amount: 9.99
+  rent_amount: 9.99
+  rent_type: daily
   user: two

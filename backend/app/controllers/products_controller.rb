@@ -4,14 +4,12 @@ class ProductsController < ApplicationController
   # GET /products
   def index
     @products = Product.all
-
     render json: @products
   end
 
   # GET /products/1
   def show
     @product = Product.find(params[:id])
-    @owner = @product.user
     render json: @product
   end
 
@@ -28,8 +26,9 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1
   def update
+    @product = Product.find(params[:id])
     if @product.update(product_params)
-      render json: @product
+      render json: @product, status: :ok
     else
       render json: @product.errors, status: :unprocessable_entity
     end
@@ -37,8 +36,11 @@ class ProductsController < ApplicationController
 
   # DELETE /products/1
   def destroy
+    @product = Product.find(params[:id])
     @product.destroy
+    head :no_content
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -48,6 +50,6 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:title, :description, :selling_price, :hourly_rent_amount, :daily_rent_amount, :user_id)
+      params.require(:product).permit(:title, :description, :selling_price, :rent_amount, :rent_type, :user_id)
     end
 end

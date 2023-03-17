@@ -14,7 +14,7 @@ Move inside the directory using, `cd Teebay`
 First, the databse is needed to be created using the following command
 
 ```bash 
-docker compose run web rake db:create
+docker compose run api rake db:create
 ``` 
 To run the application use the following command 
 ```bash
@@ -27,3 +27,8 @@ After successful build and container creation, visit
 to see the client interface and visit 
  
  [`http://localhost:3000` ](http://localhost:3000) for rails application
+ 
+ You might need to migrate the database. In that case, run  
+ `docker exec -it api_container_id bash`
+ 
+ Inside the container run `bin/rails db:migrate`

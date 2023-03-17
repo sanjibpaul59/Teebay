@@ -24,10 +24,8 @@ After successful build and container creation, please visit
 to see the client interface and visit 
  
  [`http://localhost:8000` ](http://localhost:8000) for rails application
-
- `docker compose logs -f` will show the continuous logs for the services described in the compose file. To see the logs of individual services, try running 
- ```
- docker compose ps
- docker compose logs <service name>
- docker compose logs -f [for continous logs]
- ```
+ 
+ You might need to migrate the database. In that case, run  
+ `docker exec -it api_container_id bash`
+ 
+ Inside the container run `bin/rails db:migrate`

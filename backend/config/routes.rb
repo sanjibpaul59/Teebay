@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   get '/current_user', to: 'application#current_user_json'
-  get '/session', to: 'sessions#show'
   delete '/logout', to: 'sessions#destroy'
   resources :transactions
   resources :product_categories

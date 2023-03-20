@@ -43,7 +43,7 @@ class UsersController < ApplicationController
     if user_id.present?
       @user = User.find(user_id)
       @products = @user.products
-      render json: @products
+      render json: @products.includes(:categories).to_json(include: :categories)
     else
       render json: { error: "User id is required" }, status: :unprocessable_entity
     end

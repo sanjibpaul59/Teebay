@@ -3,32 +3,44 @@ class ProductsController < ApplicationController
 
   # GET /products
   def index
-    @products = Product.all
-    render json: @products
+    @products = Product.includes(:categories).all
+    render json: @products.to_json(include: :categories)
   end
 
   # GET /products/1
   def show
-    @product = Product.find(params[:id])
-    render json: @product
+    @product = Product.includes(:categories).find(params[:id])
+    render json: @product.to_json(include: :categories)
   end
 
   # POST /products
+  # def create
+  #   @product = Product.new(product_params)
+
+  #   if @product.save
+  #     render json: @product.to_json(include: :categories), status: :created, location: @product
+  #   else
+  #     render json: @product.errors, status: :unprocessable_entity
+  #   end
+  # end
   def create
     @product = Product.new(product_params)
-
+    category_ids = params[:category_ids]
+    
     if @product.save
-      render json: @product, status: :created, location: @product
+      @product.categories = Category.where(id: category_ids)
+      render json: @product.to_json(include: :categories), status: :created, location: @product
     else
       render json: @product.errors, status: :unprocessable_entity
     end
   end
 
+
   # PATCH/PUT /products/1
   def update
     @product = Product.find(params[:id])
     if @product.update(product_params)
-      render json: @product, status: :ok
+      render json: @product.to_json(include: :categories), status: :ok
     else
       render json: @product.errors, status: :unprocessable_entity
     end
@@ -50,6 +62,8 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:title, :description, :selling_price, :rent_amount, :rent_type, :user_id)
+      params.require(:product).permit(:title, :description, :selling_price, :user_id, :rent_amount, :rent_type, category_ids: [])
     end
+
+
 end

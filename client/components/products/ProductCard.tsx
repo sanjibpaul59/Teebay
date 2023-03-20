@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Product } from "../../interfaces/Product"
+import { Product } from "@/interfaces/Product"
 import {
   Container,
   Card,
@@ -7,7 +7,8 @@ import {
   Text,
   TypographyStylesProvider,
 } from '@mantine/core'
-import { MdDelete } from 'react-icons/md'
+
+import capitalize from "@/lib/capitalize"
 
 interface ProductCardProps { 
   product: Product
@@ -20,12 +21,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <Card shadow="sm" padding="lg" withBorder>
           <Group position="apart">
             <Text fz="xl">{product.title}</Text>
-            {/* <Text fz="xl">
-            <MdDelete />
-          </Text> */}
           </Group>
           <Text fw={500} color="dimmed">
-            Categories: Category Names Here
+            Categories:{' '}
+            {product.categories
+              .map((category) => capitalize(category.category_name))
+              .join(', ')}
           </Text>
           <Text fw={500} color="dimmed">
             Price: BDT {product.selling_price}

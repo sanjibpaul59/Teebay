@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Product } from '../../interfaces/Product'
+import { Product } from '@/interfaces/Product'
 import { ProductCard } from './ProductCard'
 import { Center } from '@mantine/core'
 
@@ -14,16 +14,16 @@ export const ProductList = ({ products }: ProductListProps) => {
         <title>Products List</title>
       </Head>
       <div>
-        <Center h={100}>
+        {/* <Center h={100}>
           <h1>ALL PRODUCTS</h1>
-        </Center>
-        <ul>
+        </Center> */}
+        {/* <ul> */}
           {products.map((product: any) => (
-            <li key={product.id}>
+            // <li key={product.id}>
               <ProductCard product={product} />
-            </li>
+            // </li>
           ))}
-        </ul>
+        {/* </ul> */}
       </div>
     </>
   )

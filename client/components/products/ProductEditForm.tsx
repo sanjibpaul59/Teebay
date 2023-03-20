@@ -1,117 +1,190 @@
-import { Product} from "../../interfaces/Product"
+import { Product } from '@/interfaces/Product'
 import { useForm } from '@mantine/form'
-import { Container, TextInput, Group, Button, Textarea, Grid, Select, MultiSelect, NumberInput} from "@mantine/core"
-
+import { forwardRef } from 'react'
+import capitalize from '@/lib/capitalize'
+import {
+  Container,
+  TextInput,
+  Group,
+  Button,
+  Textarea,
+  Grid,
+  Select,
+  MultiSelect,
+  NumberInput,
+  MultiSelectValueProps,
+  SelectItemProps,
+  Box,
+  rem,
+  Flex,
+  Text,
+  CloseButton
+} from '@mantine/core'
+import axios from 'axios'
 import { useRouter } from 'next/router'
-interface ProductEditProps { 
- product: Product
+import { useEffect, useState } from 'react'
+
+type EditProductFormProps = {
+  product: Product
 }
-const ProductEditForm = ({ product }: ProductEditProps) => {
-  const router = useRouter()
- const editForm = useForm({
-  initialValues: {
-   title: product.title,
-   categories: [{id: 1, name: 'category1'} , {id: 2, name: 'category2'}],
-   description: product.description,
-   selling_price: product.selling_price,
-   rent_amount: product.rent_amount,
-   rent_type: product.rent_type,
 
+type Category = {
+  id: number
+  category_name: string
+}
+
+const ProductEditForm = ({ product }: EditProductFormProps) => {
+  const [ categories, setCategories ] = useState<Category[]>([])
+  const [ selectedCategories, setSelectedCategories ] = useState<any[]>([])
+  const editForm = useForm({
+    initialValues: {
+      title: product.title,
+      description: product.description,
+      selling_price: product.selling_price,
+      rent_amount: product.rent_amount,
+      rent_type: product.rent_type,
+      categories: product.categories,
+    },
+  })
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3000/categories')
+      .then((response) => {
+          setCategories(response.data)
+      })
+      .catch((error) => {
+        console.error('Error fetching categories:', error)
+      })
+    
+    setSelectedCategories(product.categories.map((category) => {
+       return { label: category.category_name, value: category.id.toString() } 
+    }))
+  }, [])
+  console.log(
+    'selectedCategories:',
+    selectedCategories.map((category: any) => category.value)
+  )
+  const handleCategoryChange = (value: Category[]) => { 
+    setSelectedCategories(value)
   }
 
- })
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => { 
+    e.preventDefault()
+    // const updatedProduct = { ...editForm.values, category_ids: selectedCategories.map((category: any) => category.value) }
+    // rename the categories key to category_ids before sending to the server
+    
+    
+    const categoryIds = editForm.values.categories.map((category) => category.id);
+    console.log('editForm.values:', editForm.values, categoryIds)
+    const updatedProduct = { ...editForm.values, category_ids: categoryIds }
+    console.log('updatedProduct:', updatedProduct)
 
- const rent_types = [
-  { value: 'hourly', label: 'per hr' },
-  { value: 'daily', label: 'per day' },
- ];
- const product_categories = [
-  {value: 'electronics', label: 'Electronics'},
-  {value: 'furniture', label: 'Furniture'},
-  {value: 'home appliances', label: 'Home Appliances'},
-  {value: 'sporting goods', label: 'Sporting Goods'},
-  {value: 'outdoor', label: 'Outdoor'},
-  {value: 'toys', label: 'Toys'},
- ]
-
-  const handleSubmit = async () => {
-    const requestBody = {
-      title: editForm.values.title,
-      description: editForm.values.description,
-      selling_price: editForm.values.selling_price,
-      rent_amount: editForm.values.rent_amount,
-      rent_type: editForm.values.rent_type,
-    }
-    const res = await fetch(`http://localhost:3000/products/${product.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    })
-
-    if (res.ok) {
-      router.push('/products')
-    } else {
-      console.error('Error Updating product')
-    }
+    const { categories, ...rest } = updatedProduct
+    const newObj = Object.fromEntries(Object.entries(rest))
+    console.log('product:', newObj)
   }
- return (
-   <Container mt={100}>
-     <Container mt={20} mx="auto" align-content="center">
-       <form onSubmit={handleSubmit}>
-         <TextInput
-           mt={30}
-           label="Product Title"
-           placeholder="Product Title"
-           {...editForm.getInputProps('title')}
-         />
-         <MultiSelect
-           data={product_categories}
-           mt={30}
-           label="Categories"
-           {...editForm.getInputProps('categories')}
-         />
-         <Textarea
-           mt={30}
-           label="Product Description"
-           placeholder="Product Description"
-           {...editForm.getInputProps('description')}
-         />
-         <Grid mt={30}>
-           <Grid.Col md={4} lg={4}>
-             <NumberInput
-               label="Price"
-               placeholder="Price"
-               {...editForm.getInputProps('selling_price')}
-             />
-           </Grid.Col>
-           <Grid.Col md={8} lg={8}>
-             <Group position="apart">
-               <NumberInput
-                 label="Rent"
-                 placeholder="Rent Amount"
-                 {...editForm.getInputProps('rent_amount')}
-               />
-               <Select
-                label=""
-                placeholder="per hr"
-                data={rent_types}
-                {...editForm.getInputProps('rent_type')}
-               />
-             </Group>
-           </Grid.Col>
-         </Grid>
 
-         <Group position="right" mt="xl">
-           <Button type="submit" color="violet">
-             EDIT PRODUCT
-           </Button>
-         </Group>
-       </form>
-     </Container>
-   </Container>
- )
+  function Value({ value, label, onRemove,classNames, ...others }: MultiSelectValueProps & { value: string }) {
+    return (
+      <div {...others}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              cursor: 'default',
+              alignItems: 'center',
+              backgroundColor:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.dark[7]
+                  : theme.white,
+              border: `${rem(1)} solid ${
+                theme.colorScheme === 'dark'
+                  ? theme.colors.dark[7]
+                  : theme.colors.gray[4]
+              }`,
+              paddingLeft: theme.spacing.xs,
+              borderRadius: theme.radius.sm,
+            })}
+          >
+            <Box sx={{ lineHeight: 1, fontSize: rem(12) }}>{label}</Box>
+            <CloseButton
+              onMouseDown={onRemove}
+              variant="transparent"
+              size={22}
+              iconSize={12}
+              tabIndex={-1}
+            />
+          </Box>
+      </div>
+    )
+  }
+  
+  return (
+    <Container mt={100}>
+      <Container mt={20} mx="auto" align-content="center">
+        <form onSubmit={handleFormSubmit}>
+          <TextInput
+            mt={30}
+            label="Product Title"
+            placeholder="Product Title"
+            {...editForm.getInputProps('title')}
+          />
+          <MultiSelect
+            data={categories.map((category: Category) => { return {
+              label: capitalize(category.category_name),
+              value: category.id.toString(),
+            } })}
+            defaultValue={selectedCategories.map((category: any) => category.value)}
+            valueComponent={Value}
+            mt={30}
+            label="Categories"
+            searchable
+            {...editForm.getInputProps('categories')}
+          />
+          <Textarea
+            mt={30}
+            label="Product Description"
+            placeholder="Product Description"
+            {...editForm.getInputProps('description')}
+          />
+          <Grid mt={30}>
+            <Grid.Col md={4} lg={4}>
+              <TextInput
+                label="Price"
+                placeholder="Price"
+                {...editForm.getInputProps('selling_price')}
+              />
+            </Grid.Col>
+            <Grid.Col md={8} lg={8}>
+              <Group position="apart">
+                <NumberInput
+                  label="Rent"
+                  placeholder="Rent Amount"
+                  {...editForm.getInputProps('rent_amount')}
+                />
+                <Select
+                  label=""
+                  placeholder="per hr"
+                  data={[
+                    { label: 'per hr', value: 'hourly' },
+                    { label: 'per day', value: 'daily' },
+                  ]}
+                  {...editForm.getInputProps('rent_type')}
+                />
+              </Group>
+            </Grid.Col>
+          </Grid>
+
+          <Group position="right" mt="xl">
+            <Button type="submit" color="violet">
+              EDIT PRODUCT
+            </Button>
+          </Group>
+        </form>
+      </Container>
+    </Container>
+  )
 }
 
 export default ProductEditForm
+

@@ -1,16 +1,25 @@
-import {Product} from '../../interfaces/Product'
-import { Card, Text, Button, Group, Space } from '@mantine/core'
+import {Product} from '@/interfaces/Product'
+import { Card, Text, Button, Group, Space, TextInput, Flex } from '@mantine/core'
+import capitalize from '@/lib/capitalize'
+import { modals } from '@mantine/modals'
+import { useState } from 'react'
+import { DateInput } from '@mantine/dates'
 
 interface ProductDetailProps { 
   product: Product
 }
 const ProductDetail = ({ product }: ProductDetailProps) => {
+  const [rentFrom, setRentFrom] = useState<Date | null>(null)
+  const [rentTo, setRentTo] = useState<Date | null>(null)
  return (
    <>
      <Card mt={20}>
        <h1>{product.title}</h1>
        <Text mt={10} fw={500} color="dimmed">
-         Categories: product.product_categories
+         Categories:{' '}
+         {product.categories
+           .map((category) => capitalize(category.category_name))
+           .join(', ')}
        </Text>
        <Text mt={10} fw={500} color="dimmed">
          Price: BDT {product.selling_price}
@@ -31,12 +40,42 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
        </Text>
        <Space h="xl" />
        <Group position="right">
-         <Button color="violet" onClick={(event) => console.log('Rent')}>
+         <Button
+           color="violet"
+           onClick={() => console.log('Rent')}
+         >
            Rent
          </Button>
-         <Button color="violet" onClick={(event) => console.log('Buy')}>
+         <Button
+           color="violet"
+           onClick={() =>
+             modals.openConfirmModal({
+               withCloseButton: false,
+               centered: true,
+               children: (
+                 <Text size="xl">
+                   Are you sure you want to buy this product?
+                 </Text>
+               ),
+               labels: {
+                 cancel: "No",
+                 confirm: 'Yes',
+               },
+               cancelProps: { color: 'red' },
+               confirmProps: { color: 'violet' },
+               onCancel: () => console.log('Cancel'),
+               onConfirm: () => console.log('Confirmed'),
+             })
+           }
+         >
            Buy
          </Button>
+         {/* <Button color="violet" onClick={(event) => console.log('Rent')}>
+           Rent
+         </Button> */}
+         {/* <Button color="violet" onClick={(event) => console.log('Buy')}>
+           Buy
+         </Button> */}
        </Group>
      </Card>
    </>

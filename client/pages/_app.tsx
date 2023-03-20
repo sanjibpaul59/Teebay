@@ -2,6 +2,8 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { MantineProvider } from '@mantine/core'
 import Head from 'next/head'
+import { ModalsProvider } from '@mantine/modals'
+
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
@@ -26,7 +28,9 @@ export default function App(props: AppProps) {
         withGlobalStyles
         withNormalizeCSS
       >
-        <Component {...pageProps} />
+      <ModalsProvider>
+          <Component {...pageProps} />
+       </ModalsProvider>
       </MantineProvider>
     </>
   ) 

@@ -1,5 +1,5 @@
 import ProductDetail from "@/components/products/ProductDetail"
-import { Button, Container, Group, Space } from "@mantine/core"
+import {  Container } from "@mantine/core"
 
 export default function ProductDetails({ product }: any) {
   return (

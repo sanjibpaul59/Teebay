@@ -15,9 +15,11 @@ export default function Login() {
     const res = await axios.post("http://localhost:3000/login", {email, password})
     const data: LoginResponse = await res.data
     if (res.status === 200) {
+      const userId = res.data.user[ "id" ]
+      localStorage.setItem("userId", userId)
+      localStorage.s
       router.push({
         pathname: '/products/user-products',
-        query: { userId: res.data.user["id"] },
       })
     }
     else {

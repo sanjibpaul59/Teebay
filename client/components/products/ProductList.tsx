@@ -5,9 +5,10 @@ import { Center } from '@mantine/core'
 
 interface ProductListProps {
   products: Product[]
+  current_user: string
 }
 
-export const ProductList = ({ products }: ProductListProps) => {
+export const ProductList = ({ products , current_user }: ProductListProps) => {
   return (
     <>
       <Head>
@@ -20,7 +21,7 @@ export const ProductList = ({ products }: ProductListProps) => {
         {/* <ul> */}
           {products.map((product: any) => (
             // <li key={product.id}>
-              <ProductCard product={product} />
+              <ProductCard product={product} current_user={current_user} />
             // </li>
           ))}
         {/* </ul> */}

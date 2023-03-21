@@ -11,9 +11,8 @@ import { useRouter } from 'next/router'
 
 interface ProductDetailProps { 
   product: Product
-  current_user: string
 }
-const ProductDetail = ({ product, current_user }: ProductDetailProps) => {
+const ProductDetail = ({ product }: ProductDetailProps) => {
   const router = useRouter()
   const [rentFrom, setRentFrom] = useState<Date | null>(null)
   const [ rentTo, setRentTo ] = useState<Date | null>(null)
@@ -37,7 +36,6 @@ const ProductDetail = ({ product, current_user }: ProductDetailProps) => {
    <>
      <Card mt={20}>
        <h1>{product.title}</h1>
-       <p>{ current_user }</p>
        <Text mt={10} fw={500} color="dimmed">
          Categories:{' '}
          {product.categories

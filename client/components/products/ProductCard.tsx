@@ -12,10 +12,10 @@ import capitalize from "@/lib/capitalize"
 
 interface ProductCardProps { 
   product: Product
-  current_user: string
+  
 }
 
-export const ProductCard = ({ product, current_user }: ProductCardProps) => {
+export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Container mt={20} size="40rem" mx="auto" align-content="center">
         <Card shadow="sm" padding="lg" withBorder>

@@ -12,16 +12,18 @@ import capitalize from "@/lib/capitalize"
 
 interface ProductCardProps { 
   product: Product
+  
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Container mt={20} size="40rem" mx="auto" align-content="center">
-      <Link href={`/products/${product.id}`} passHref>
         <Card shadow="sm" padding="lg" withBorder>
-          <Group position="apart">
-            <Text fz="xl">{product.title}</Text>
-          </Group>
+          <Link href={`/products/${product.id}`} passHref>
+            <Group position="apart">
+              <Text fz="xl">{product.title}</Text>
+            </Group>
+          </Link>
           <Text fw={500} color="dimmed">
             Categories:{' '}
             {product.categories
@@ -45,7 +47,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             </Text>
           </Group>
         </Card>
-      </Link>
     </Container>
   )
 }

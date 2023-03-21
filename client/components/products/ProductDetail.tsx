@@ -2,15 +2,36 @@ import {Product} from '@/interfaces/Product'
 import { Card, Text, Button, Group, Space, TextInput, Flex } from '@mantine/core'
 import capitalize from '@/lib/capitalize'
 import { modals } from '@mantine/modals'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DateInput } from '@mantine/dates'
+import { getCurrentUser } from '@/lib/getCurrentUser'
+import axios from 'axios'
+import { useRouter } from 'next/router'
+
 
 interface ProductDetailProps { 
   product: Product
 }
 const ProductDetail = ({ product }: ProductDetailProps) => {
+  const router = useRouter()
   const [rentFrom, setRentFrom] = useState<Date | null>(null)
-  const [rentTo, setRentTo] = useState<Date | null>(null)
+  const [ rentTo, setRentTo ] = useState<Date | null>(null)
+  const buyer = getCurrentUser()
+  async function handleProductBuy (){ 
+    const res = await axios.post('http://localhost:3000/transactions', {
+      product_id: product.id,
+      seller_id: product.user_id,
+      buyer_id: buyer,
+      price: product.selling_price,
+      transcation_type: 'buy',
+      rentFrom: null,
+      rentTo: null,
+      selling_date: new Date(),
+    })
+    if(res.status === 201) {
+      router.push('/products')
+    }
+  }
  return (
    <>
      <Card mt={20}>
@@ -64,18 +85,12 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
                cancelProps: { color: 'red' },
                confirmProps: { color: 'violet' },
                onCancel: () => console.log('Cancel'),
-               onConfirm: () => console.log('Confirmed'),
+               onConfirm: () => handleProductBuy(),
              })
            }
          >
            Buy
          </Button>
-         {/* <Button color="violet" onClick={(event) => console.log('Rent')}>
-           Rent
-         </Button> */}
-         {/* <Button color="violet" onClick={(event) => console.log('Buy')}>
-           Buy
-         </Button> */}
        </Group>
      </Card>
    </>
@@ -83,25 +98,3 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 }
 
 export default ProductDetail
-
-
-    // <Modal
-    //     opened={openedModalBuy}
-    //     onClose={close}
-    //     size="md"
-    //     centered
-    //     withCloseButton={false}
-    //   >
-    //     <Text>Are you sure you want to buy this product?</Text>
-    //     <Group position="right" mt="xl">
-    //       <Button
-    //         color="red"
-    //         onClick={() => console.log('Transaction Cancled')}
-    //       >
-    //         No
-    //       </Button>
-    //       <Button color="violet" onClick={() => console.log('Product bought')}>
-    //         Yes
-    //       </Button>
-    //     </Group>
-    //   </Modal>

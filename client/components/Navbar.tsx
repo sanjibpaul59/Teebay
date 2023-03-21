@@ -13,7 +13,7 @@ export default function Navigation() {
           <Link href="/products/user-products">My Products</Link>
           <Link href="/products/newProduct">Add Product</Link>
           {authenticatedUser ? (
-            <Link href="/logout">Logout</Link>
+            <Link href="/auth/logout">Logout</Link>
           ) : (
             <Link href="/auth">Login</Link>
           )}

@@ -11,4 +11,10 @@ class Product < ApplicationRecord
   validates :rent_amount, numericality: { greater_than_or_equal_to: 0 }
   validates :rent_type, inclusion: { in: %w(daily hourly), message: "%{value} is not included in the list" }
 
+
+  scope :unsold_and_available, -> { 
+    left_outer_joins(:transactions)
+    .where(transactions: { id: nil })
+    .or where("transactions.rent_end_date <?", Time.now)
+  }
 end

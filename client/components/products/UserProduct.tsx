@@ -68,7 +68,8 @@ const UserProduct = ({ product }: UserProductProps) => {
            .join(', ')}
        </Text>
        <Text fw={500} color="dimmed">
-         Price: BDT {product.selling_price}
+         Price: ${+product.selling_price} | Rent: ${product.rent_amount}{' '}
+         {product.rent_type}
        </Text>
        <Group position="apart" mt="md" mb="xs">
          <Text size="sm" lineClamp={3}>

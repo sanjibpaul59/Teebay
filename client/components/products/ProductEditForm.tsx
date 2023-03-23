@@ -16,16 +16,15 @@ import {
   SelectItemProps,
   Box,
   rem,
-  Flex,
-  Text,
   CloseButton,
+  Flex
 } from '@mantine/core'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 type EditProductFormProps = {
-  product: Product
+  product: any
 }
 
 type Category = {
@@ -34,16 +33,19 @@ type Category = {
 }
 
 const ProductEditForm = ({ product }: EditProductFormProps) => {
-  const [categories, setCategories] = useState<Category[]>([])
-  const [selectedCategories, setSelectedCategories] = useState<any[]>([])
+  const router = useRouter()
+  const editableProduct = product.product
+  const [ categories, setCategories ] = useState<Category[]>([])
+  
   const editForm = useForm({
     initialValues: {
-      title: product.title,
-      description: product.description,
-      selling_price: product.selling_price,
-      rent_amount: product.rent_amount,
-      rent_type: product.rent_type,
-      categories: product.categories,
+      title: editableProduct.title,
+      description: editableProduct.description,
+      selling_price: editableProduct.selling_price,
+      rent_amount: editableProduct.rent_amount,
+      rent_type: editableProduct.rent_type,
+      categories: editableProduct.categories,
+      category_ids: [] 
     },
   })
 
@@ -57,35 +59,32 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
         console.error('Error fetching categories:', error)
       })
 
-    setSelectedCategories(
-      product.categories? product.categories.map((category) => {
-        return { label: category.category_name, value: category.id.toString() }
-      }): []
-    )
   }, [])
-  console.log(
-    'selectedCategories:',
-    selectedCategories.map((category: any) => category.value)
-  )
-  const handleCategoryChange = (value: Category[]) => {
-    setSelectedCategories(value)
-  }
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const data = categories.map((category: Category) => {
+    return {
+      label: capitalize(category.category_name),
+      value: category.id.toString(),
+    }
+  })
+  const editableProductCategories = editableProduct.categories.map((category: Category) => category.id.toString())
+  
+  // Filter all categories in data with editableProductCategories to get the default values for MultiSelect
+  const defaultCategories = data.filter((category) => {
+    return editableProductCategories.includes(category.value)
+  })
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // const updatedProduct = { ...editForm.values, category_ids: selectedCategories.map((category: any) => category.value) }
-    // rename the categories key to category_ids before sending to the server
-
-    const categoryIds = editForm.values.categories.map(
-      (category) => category.id
-    )
-    console.log('editForm.values:', editForm.values, categoryIds)
-    const updatedProduct = { ...editForm.values, category_ids: categoryIds }
-    console.log('updatedProduct:', updatedProduct)
-
-    const { categories, ...rest } = updatedProduct
-    const newObj = Object.fromEntries(Object.entries(rest))
-    console.log('product:', newObj)
+    const { title, description, selling_price, rent_amount, rent_type, category_ids } = editForm.values
+    const updatedProduct = { title, description, selling_price, rent_amount, rent_type, category_ids }
+    console.log('updatedProduct:', {product : updatedProduct})
+    const res = await axios.put(`http://localhost:3000/products/${editableProduct.id}`, {product : updatedProduct})
+    if (res.status === 200) {
+      router.push({
+        pathname: '/products/user-products',
+      })
+    }
   }
 
   function Value({
@@ -126,6 +125,16 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
     )
   }
 
+  const Item = forwardRef<HTMLDivElement, SelectItemProps>(({label, value, ...others}, ref) => {
+    return (
+      <div ref={ref} {...others}>
+        <Flex align="center" justify="space-between">
+          <Box>{label}</Box>
+        </Flex>
+    </div>
+  )
+  })
+
   return (
     <Container mt={100}>
       <Container mt={20} mx="auto" align-content="center">
@@ -137,20 +146,15 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
             {...editForm.getInputProps('title')}
           />
           <MultiSelect
-            data={categories.map((category: Category) => {
-              return {
-                label: capitalize(category.category_name),
-                value: category.id.toString(),
-              }
-            })}
-            defaultValue={selectedCategories.map(
-              (category: any) => category.value
-            )}
+            data={data}
             valueComponent={Value}
+            itemComponent={Item}
+            searchable
+            // defaultValue={defaultCategories.map((category: any) => category.value)}
+            defaultValue={editableProductCategories}
             mt={30}
             label="Categories"
-            searchable
-            {...editForm.getInputProps('categories')}
+            {...editForm.getInputProps('category_ids')}
           />
           <Textarea
             mt={30}
@@ -199,112 +203,3 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
 
 export default ProductEditForm
 
-// import { useForm } from '@mantine/core'
-// import { Multiselect } from '@mantine/core'
-// import { useState, useEffect } from 'react'
-
-// interface Product {
-//   id: number
-//   title: string
-//   description: string
-//   selling_price: number
-//   rent_amount: number
-//   rent_type: string
-//   user_id: number
-//   categories: number[]
-// }
-
-// interface Props {
-//   product: Product
-// }
-
-// export default function ProductUpdateForm({ product }: Props) {
-//   const [categories, setCategories] = useState<number[]>(product.categories)
-//   const [errorMessage, setErrorMessage] = useState<string>('')
-//   const form = useForm<Product>({
-//     initialValues: {
-//       id: product.id,
-//       title: product.title,
-//       description: product.description,
-//       selling_price: product.selling_price,
-//       rent_amount: product.rent_amount,
-//       rent_type: product.rent_type,
-//       user_id: product.user_id,
-//       categories: product.categories,
-//     },
-//     onSubmit: async (formData) => {
-//       try {
-//         // Handle form submission
-//         console.log(formData)
-//       } catch (error) {
-//         setErrorMessage('An error occurred while updating the product')
-//       }
-//     },
-//     validationRules: {
-//       // Define any validation rules for the form here
-//     },
-//   })
-
-//   useEffect(() => {
-//     form.setFieldValue('categories', categories)
-//   }, [categories])
-
-//   const handleCategoryChange = (selectedItems: number[]) => {
-//     setCategories(selectedItems)
-//   }
-
-//   return (
-//     <form ref={formRef}>
-//       <TextInput
-//         label="Title"
-//         name="title"
-//         value={values.title}
-//         onChange={handleChange}
-//         error={errors.title}
-//       />
-//       <Textarea
-//         label="Description"
-//         name="description"
-//         value={values.description}
-//         onChange={handleChange}
-//         error={errors.description}
-//       />
-//       <TextInput
-//         type="number"
-//         label="Selling price"
-//         name="selling_price"
-//         value={values.selling_price}
-//         onChange={handleChange}
-//         error={errors.selling_price}
-//       />
-//       <TextInput
-//         type="number"
-//         label="Rent amount"
-//         name="rent_amount"
-//         value={values.rent_amount}
-//         onChange={handleChange}
-//       />
-//       <MultiSelect
-//         data={product.categories.map((category: any) => ({
-//           value: category.id,
-//           label: category.category_name,
-//         }))}
-//         label="Categories"
-//         placeholder="Select categories"
-//         name="category_ids"
-//         value={values.category_ids.map((id) => id.toString())}
-//         onChange={(value) =>
-//           handleChange({ target: { name: 'category_ids', value } })
-//         }
-//       />
-//       <Button
-//         type="button"
-//         variant="outline"
-//         onClick={handleUpdate}
-//         disabled={isLoading}
-//       >
-//         {isLoading ? <Loader /> : 'Update product'}
-//       </Button>
-//     </form>
-//   )
-// }

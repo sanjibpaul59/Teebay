@@ -1,9 +1,9 @@
 import { Container, Grid } from '@mantine/core'
 import ProductEditForm from '@/components/products/ProductEditForm'
 import Navigation from '@/components/Navbar'
-import {Product} from '@/interfaces/Product'
 
-export default function EditProduct(product: Product){
+
+export default function EditProduct(product: any){
   return (
       <div>
         <Grid m={10}>

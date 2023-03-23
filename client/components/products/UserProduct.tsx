@@ -22,7 +22,7 @@ const UserProduct = ({ product }: UserProductProps) => {
   const router = useRouter()
   async function handleProductDelete() { 
     const res = await axios.delete(`http://localhost:3000/products/${product.id}`)
-    if(res.status === 200) {
+    if(res.status === 204) {
       router.push('/products/user-products')
     }
 

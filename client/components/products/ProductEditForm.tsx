@@ -36,6 +36,7 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
   const router = useRouter()
   const editableProduct = product.product
   const [ categories, setCategories ] = useState<Category[]>([])
+  const [selectedCategories, setSelectedCategories] = useState<any>([])
   
   const editForm = useForm({
     initialValues: {
@@ -54,6 +55,7 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
       .get('http://localhost:3000/categories')
       .then((response) => {
         setCategories(response.data)
+        setSelectedCategories(editableProductCategories)
       })
       .catch((error) => {
         console.error('Error fetching categories:', error)
@@ -68,6 +70,7 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
     }
   })
   const editableProductCategories = editableProduct.categories.map((category: Category) => category.id.toString())
+  console.log(editableProductCategories)
   
   // Filter all categories in data with editableProductCategories to get the default values for MultiSelect
   const defaultCategories = data.filter((category) => {
@@ -76,8 +79,8 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const { title, description, selling_price, rent_amount, rent_type, category_ids } = editForm.values
-    const updatedProduct = { title, description, selling_price, rent_amount, rent_type, category_ids }
+    const { title, description, selling_price, rent_amount, rent_type } = editForm.values
+    const updatedProduct = { title, description, selling_price, rent_amount, rent_type, category_ids: selectedCategories }
     console.log('updatedProduct:', {product : updatedProduct})
     const res = await axios.put(`http://localhost:3000/products/${editableProduct.id}`, {product : updatedProduct})
     if (res.status === 200) {
@@ -85,6 +88,10 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
         pathname: '/products/user-products',
       })
     }
+  }
+  const handleCategoryChange = (value:any) => { 
+    const prevValues : string[] = editForm.values.category_ids
+    setSelectedCategories([...prevValues, ...value])
   }
 
   function Value({
@@ -150,11 +157,13 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
             valueComponent={Value}
             itemComponent={Item}
             searchable
-            // defaultValue={defaultCategories.map((category: any) => category.value)}
-            defaultValue={editableProductCategories}
+            clearable
+            value={selectedCategories}
+            // value={defaultCategories.map((category: any) => category.value)}
             mt={30}
             label="Categories"
-            {...editForm.getInputProps('category_ids')}
+            onChange={handleCategoryChange}
+            // {...editForm.getInputProps('category_ids')}
           />
           <Textarea
             mt={30}

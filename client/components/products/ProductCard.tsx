@@ -18,35 +18,35 @@ interface ProductCardProps {
 export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Container mt={20} size="40rem" mx="auto" align-content="center">
-        <Card shadow="sm" padding="lg" withBorder>
-          <Link href={`/products/${product.id}`} passHref>
-            <Group position="apart">
-              <Text fz="xl">{product.title}</Text>
-            </Group>
-          </Link>
-          <Text fw={500} color="dimmed">
-            Categories:{' '}
-            {product.categories
-              .map((category) => capitalize(category.category_name))
-              .join(', ')}
-          </Text>
-          <Text fw={500} color="dimmed">
-            Price: BDT {product.selling_price}
-          </Text>
-          <Group position="apart" mt="md" mb="xs">
-            <Text size="sm" lineClamp={3}>
-              <TypographyStylesProvider>
-                {product.description} Lorem ipsum dolor sit amet consectetur,
-                adipisicing elit. Eveniet hic laudantium sit provident ad fuga
-                nesciunt? Excepturi voluptates neque suscipit, impedit ut quo
-                amet. Animi autem maiores pariatur asperiores quasi vel ratione?
-                Facere earum cumque nulla optio! Praesentium quibusdam
-                reiciendis non nam illo ut quasi, blanditiis quam commodi atque
-                quo.
-              </TypographyStylesProvider>
-            </Text>
+      <Card shadow="sm" padding="lg" withBorder>
+        <Link href={`/products/${product.id}`} passHref>
+          <Group position="apart">
+            <Text fz="xl">{product.title}</Text>
           </Group>
-        </Card>
+        </Link>
+        <Text fw={500} color="dimmed">
+          Categories:{' '}
+          {product.categories
+            .map((category) => capitalize(category.category_name))
+            .join(', ')}
+        </Text>
+        <Text fw={500} color="dimmed">
+          Price: ${+product.selling_price} | Rent: $
+          {product.rent_amount} {product.rent_type}
+        </Text>
+        <Group position="apart" mt="md" mb="xs">
+          <Text size="sm" lineClamp={3}>
+            <TypographyStylesProvider>
+              {product.description} Lorem ipsum dolor sit amet consectetur,
+              adipisicing elit. Eveniet hic laudantium sit provident ad fuga
+              nesciunt? Excepturi voluptates neque suscipit, impedit ut quo
+              amet. Animi autem maiores pariatur asperiores quasi vel ratione?
+              Facere earum cumque nulla optio! Praesentium quibusdam reiciendis
+              non nam illo ut quasi, blanditiis quam commodi atque quo.
+            </TypographyStylesProvider>
+          </Text>
+        </Group>
+      </Card>
     </Container>
   )
 }

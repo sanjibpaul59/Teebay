@@ -20,9 +20,9 @@ export const ProductList = ({ products  }: ProductListProps) => {
         </Center> */}
         {/* <ul> */}
           {products.map((product: any) => (
-            // <li key={product.id}>
+            <li key={product.id}>
               <ProductCard product={product}  />
-            // </li>
+             </li>
           ))}
         {/* </ul> */}
       </div>

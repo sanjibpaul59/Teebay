@@ -14,11 +14,11 @@ export default function Products({ products }: any) {
     )
   }
   return (
-    <div>
+    <>
       <Head>
-        <title>Products List</title>
+        <title>Products List | Teebay</title>
       </Head>
-      <Grid>
+      <Grid m={0}>
         <Grid.Col span="content">
           <Navigation />
         </Grid.Col>
@@ -29,12 +29,11 @@ export default function Products({ products }: any) {
           <ProductList products={products} />
         </Grid.Col>
       </Grid>
-    </div>
+    </>
   )
 }
 
 export async function getServerSideProps() {
-  const res = await axios.get("http://localhost:3000/products")
-  console.log(res.data)
+  const res = await axios.get("http://localhost:3000/unsold_products")
   return { props: { products: res.data } }
 }

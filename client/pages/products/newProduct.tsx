@@ -1,10 +1,20 @@
+import Navigation from "@/components/Navbar"
 import ProductAddForm from "@/components/products/ProductAddForm"
-import {Container} from "@mantine/core"
+import {Container, Grid} from "@mantine/core"
 const NewProduct = () => {
   return (
-    <Container mt={100}>
-      <ProductAddForm />
-    </Container>
+    <div>
+      <Grid m={10}>
+        <Grid.Col span="content">
+          <Navigation />
+        </Grid.Col>
+        <Grid.Col span={8}>
+          <Container mt={100}>
+            <ProductAddForm />
+          </Container>
+        </Grid.Col>
+      </Grid>
+    </div>
   )
 }
  

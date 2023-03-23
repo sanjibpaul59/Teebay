@@ -11,12 +11,22 @@ import { Product } from '@/interfaces/Product'
 import capitalize from "@/lib/capitalize"
 import Link from 'next/link'
 import { modals } from '@mantine/modals'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 interface UserProductProps {
   product: Product
 }
 
-const  UserProduct = ({product}: UserProductProps) => {
+const UserProduct = ({ product }: UserProductProps) => {
+  const router = useRouter()
+  async function handleProductDelete() { 
+    const res = await axios.delete(`http://localhost:3000/products/${product.id}`)
+    if(res.status === 200) {
+      router.push('/products/user-products')
+    }
+
+  }
  return (
    <Container mt={20} size="40rem" mx="auto" align-content="center">
      <Card shadow="sm" padding="lg" withBorder>
@@ -44,7 +54,7 @@ const  UserProduct = ({product}: UserProductProps) => {
                cancelProps: { color: 'red' },
                confirmProps: { color: 'violet' },
                onCancel: () => console.log('Cancel'),
-               onConfirm: () => console.log('Confirmed'),
+               onConfirm: () => handleProductDelete(),
              })
            }
          >

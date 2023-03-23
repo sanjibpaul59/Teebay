@@ -13,9 +13,16 @@ import {
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 
+/* 
+TODOS:  
+1. Fetch categories from the server 
+2. Populate form with categories 
+3. Add product with categories
+*/
 const ProductAddForm = () => {
  const router = useRouter()
- const [ active, setActive ] = useState(0)
+  const [ active, setActive ] = useState(0)
+  const userId = parseInt(localStorage.getItem('userId') || '0', 10)
  // initial values for product add form
  const form = useForm({
   initialValues: {
@@ -84,7 +91,7 @@ const ProductAddForm = () => {
       selling_price: form.values.selling_price,
       rent_amount: form.values.rent_amount,
       rent_type: form.values.rent_type,
-      user_id: 1,
+      user_id: userId,
     }
    const res = await fetch('http://localhost:3000/products', {
      method: 'POST',

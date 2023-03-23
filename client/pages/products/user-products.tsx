@@ -7,6 +7,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Navigation from '@/components/Navbar'
+import Unauthorized from '@/components/authentication/Unauthorized'
 
 interface UserProductsProps { 
   products: Product[]
@@ -16,14 +17,15 @@ interface Props {
   products: Product[]
 }
 
-// function UserProducts({ products }: UserProductsProps) {
 const UserProducts: NextPage<Props> = ({ products }) => {
-    const router = useRouter()
-    const [userProducts, setUserProducts] = useState<Product[]>([])
+  const router = useRouter()
+  const [ userProducts, setUserProducts ] = useState<Product[]>([])
+  const [ authenticatedUser, setAuthenticatedUser ] = useState<any>(null)
 
   useEffect(() => {
       const userId = parseInt(localStorage.getItem('userId') || '0', 10)
       // filter the products by the user ID
+      setAuthenticatedUser(userId)
       const filteredProducts = products.filter(
         (product) => product.user_id === userId
       )
@@ -33,12 +35,15 @@ const UserProducts: NextPage<Props> = ({ products }) => {
     if (router.isFallback) {
       return <div>Loading...</div>
     }
+   if (!authenticatedUser) {
+     return <Unauthorized />
+   }
     return (
       <>
         <Head>
-          <title>Products List</title>
+          <title>My Products | Teebay</title>
         </Head>
-        <Grid>
+        <Grid m={0}>
         <Grid.Col span="content">
           <Navigation />
           </Grid.Col>
@@ -46,10 +51,13 @@ const UserProducts: NextPage<Props> = ({ products }) => {
         <Center h={100}>
           <h1>MY PRODUCTS</h1>
         </Center>
-
-          {userProducts.map((product: any) => (
-              <UserProduct product={product} />
-          ))}
+        <ul>
+            {userProducts.map((product: any) => (
+            <li key={product.id}>
+                <UserProduct product={product} />
+            </li>
+            ))}
+              </ul>
              <Container size="40rem" mx="auto">
           <Flex justify="end" my={'lg'}>
             <Link href="/products/newProduct">

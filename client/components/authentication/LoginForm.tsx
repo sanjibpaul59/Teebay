@@ -23,7 +23,7 @@ const LoginForm = ({ onSubmit, error }: LoginFormProps) => {
 
  const loginForm = useForm({
    initialValues: {
-     email: 'alexander2@mail.com',
+     email: 'alexander1@mail.com',
      password: 'PassWhat??',
    },
    // Client-side Form validation

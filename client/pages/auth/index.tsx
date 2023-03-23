@@ -17,7 +17,6 @@ export default function Login() {
     if (res.status === 200) {
       const userId = res.data.user[ "id" ]
       localStorage.setItem("userId", userId)
-      localStorage.s
       router.push({
         pathname: '/products/user-products',
       })

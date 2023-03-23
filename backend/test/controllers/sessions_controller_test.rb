@@ -32,6 +32,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy session" do
     delete logout_path
-    assert_redirected_to login_path
+    assert_response :no_content
   end
 end

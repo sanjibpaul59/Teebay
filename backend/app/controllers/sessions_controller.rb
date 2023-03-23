@@ -12,6 +12,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
-    render json: { message: 'Logged out' }
+    # render json: { message: 'Logged out' }
+    head :no_content
   end
 end

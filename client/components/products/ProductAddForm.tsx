@@ -117,7 +117,6 @@ const ProductAddForm = () => {
       user_id: userId,
       category_ids: form.values.category_ids,
     }
-    console.log(requestBody)
    const res = await fetch('http://localhost:3000/products', {
      method: 'POST',
      headers: {

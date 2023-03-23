@@ -70,7 +70,7 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
     }
   })
   const editableProductCategories = editableProduct.categories.map((category: Category) => category.id.toString())
-  console.log(editableProductCategories)
+  
   
   // Filter all categories in data with editableProductCategories to get the default values for MultiSelect
   const defaultCategories = data.filter((category) => {
@@ -81,7 +81,7 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
     e.preventDefault()
     const { title, description, selling_price, rent_amount, rent_type } = editForm.values
     const updatedProduct = { title, description, selling_price, rent_amount, rent_type, category_ids: selectedCategories }
-    console.log('updatedProduct:', {product : updatedProduct})
+    
     const res = await axios.put(`http://localhost:3000/products/${editableProduct.id}`, {product : updatedProduct})
     if (res.status === 200) {
       router.push({

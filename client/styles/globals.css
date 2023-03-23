@@ -105,3 +105,15 @@ a {
     color-scheme: dark;
   }
 }
+
+li{
+  list-style: none;
+}
+ul{
+  list-style: none;
+}
+
+div{
+  height: "calc(100vh - 100px)";
+  overflow: "auto"
+}

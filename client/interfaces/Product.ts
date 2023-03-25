@@ -9,6 +9,7 @@ export interface Product {
   user_id: number
   categories: Category[]
   category_ids: number[]
+  created_at: Date
 }
 
 export type Category = {

@@ -52,7 +52,7 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3000/categories')
+      .get('http://localhost:8000/categories')
       .then((response) => {
         setCategories(response.data)
         setSelectedCategories(editableProductCategories)
@@ -82,7 +82,7 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
     const { title, description, selling_price, rent_amount, rent_type } = editForm.values
     const updatedProduct = { title, description, selling_price, rent_amount, rent_type, category_ids: selectedCategories }
     
-    const res = await axios.put(`http://localhost:3000/products/${editableProduct.id}`, {product : updatedProduct})
+    const res = await axios.put(`http://localhost:8000/products/${editableProduct.id}`, {product : updatedProduct})
     if (res.status === 200) {
       router.push({
         pathname: '/products/user-products',

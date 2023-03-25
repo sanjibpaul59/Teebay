@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export const getCurrentUser = () => { 
  const [currentUser, setCurrentUser] = useState<string | null>(null);
   useEffect(() => {
-    const userId = localStorage.getItem('userId')
-    setCurrentUser(userId)
+    const userId:string = Cookies.get('userId')!.toString();
+    setCurrentUser(userId);
   }, []);
 
   return currentUser;

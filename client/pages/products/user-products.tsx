@@ -8,6 +8,8 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Navigation from '@/components/Navbar'
 import Unauthorized from '@/components/authentication/Unauthorized'
+import axios from 'axios'
+import Cookies from 'js-cookie'
 
 interface UserProductsProps { 
   products: Product[]
@@ -21,16 +23,15 @@ const UserProducts: NextPage<Props> = ({ products }) => {
   const router = useRouter()
   const [ userProducts, setUserProducts ] = useState<Product[]>([])
   const [ authenticatedUser, setAuthenticatedUser ] = useState<any>(null)
-
   useEffect(() => {
-      const userId = parseInt(localStorage.getItem('userId') || '0', 10)
+      const userId = parseInt(Cookies.get('userId')!)
       // filter the products by the user ID
       setAuthenticatedUser(userId)
-      const filteredProducts = products.filter(
+      const filteredProducts = products? products.filter(
         (product) => product.user_id === userId
-      )
+      ) : []
       setUserProducts(filteredProducts)
-    }, [products])
+    }, [])
 
     if (router.isFallback) {
       return <div>Loading...</div>
@@ -52,11 +53,11 @@ const UserProducts: NextPage<Props> = ({ products }) => {
           <h1>MY PRODUCTS</h1>
         </Center>
         <ul>
-            {userProducts.map((product: any) => (
+            {userProducts? userProducts.map((product: any) => (
             <li key={product.id}>
                 <UserProduct product={product} />
             </li>
-            ))}
+            )): <div>Loading...</div>}
               </ul>
              <Container size="40rem" mx="auto">
           <Flex justify="end" my={'lg'}>
@@ -76,8 +77,9 @@ const UserProducts: NextPage<Props> = ({ products }) => {
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
-  const res = await fetch(`http://localhost:3000/products`)
-  const products = await res.json()
+  const res = await axios.get("http://api:8000/products/")
+  console.log(res)
+  const products = await res.data
 
   return {
     props: {

@@ -1,13 +1,13 @@
 import axios from 'axios'
 import Head from 'next/head'
 import { ProductList } from '@/components/products/ProductList'
-import { getCurrentUser } from '@/lib/getCurrentUser'
+import Cookies from 'js-cookie'
 import Navigation from '@/components/Navbar'
 import Unauthorized from '@/components/authentication/Unauthorized'
 import { Grid, Center } from '@mantine/core'
 
 export default function Products({ products }: any) { 
-  const authenticatedUser = getCurrentUser()
+  const authenticatedUser = parseInt(Cookies.get('userId')!)
   if (!authenticatedUser) { 
     return (
       <Unauthorized />
@@ -34,6 +34,6 @@ export default function Products({ products }: any) {
 }
 
 export async function getServerSideProps() {
-  const res = await axios.get("http://localhost:3000/unsold_products")
+  const res = await axios.get("http://api:8000/unsold_products")
   return { props: { products: res.data } }
 }

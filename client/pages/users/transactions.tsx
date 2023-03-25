@@ -9,21 +9,20 @@ import Navigation from '@/components/Navbar'
 import { Grid, Center, Tabs } from '@mantine/core'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-import { getCurrentUser } from '@/lib/getCurrentUser'
 import { ProductCard } from '@/components/products/ProductCard'
-
+import Cookies from 'js-cookie'
 
 const Transactions = () => {
   const [sold_products, setSoldProducts] = useState([])
   const [bought_products,setBoughtProducts] = useState([])
   const [borrowed_products,setBorrowedProducts] = useState([])
   const [ lent_products, setLentProducts ] = useState([])
-  const current_user = parseInt(localStorage.getItem('userId') || '0', 10)
+  const current_user = parseInt(Cookies.get('userId')!)
   useEffect(() => {
-    axios.get(`http://localhost:3000/users/${current_user}/sold_products`).then((response) => setSoldProducts(response.data) )
-    axios.get(`http://localhost:3000/users/${current_user}/bought_products`).then((response) => setBoughtProducts(response.data) )
-    axios.get(`http://localhost:3000/users/${current_user}/lent_products`).then((response) => setLentProducts(response.data) )
-    axios.get(`http://localhost:3000/users/${current_user}/borrowed_products`).then((response) => setBorrowedProducts(response.data) )
+    axios.get(`http://localhost:8000/users/${current_user}/sold_products`).then((response) => setSoldProducts(response.data) )
+    axios.get(`http://localhost:8000/users/${current_user}/bought_products`).then((response) => setBoughtProducts(response.data) )
+    axios.get(`http://localhost:8000/users/${current_user}/lent_products`).then((response) => setLentProducts(response.data) )
+    axios.get(`http://localhost:8000/users/${current_user}/borrowed_products`).then((response) => setBorrowedProducts(response.data) )
   },[])
 
   return (

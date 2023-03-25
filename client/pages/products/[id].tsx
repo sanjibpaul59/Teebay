@@ -1,5 +1,6 @@
 import ProductDetail from "@/components/products/ProductDetail"
-import {  Container } from "@mantine/core"
+import { Container } from "@mantine/core"
+import axios from "axios"
 
 export default function ProductDetails({ product }: any) {
   return (
@@ -13,8 +14,8 @@ export default function ProductDetails({ product }: any) {
 export async function getServerSideProps(context: any) { 
   const { params } = context
   const { id } = params
-  const res = await fetch(`http://localhost:3000/products/${id}`)
-  const product = await res.json()
+  const res = await axios.get(`http://api:8000/products/${id}`)
+  const product = await res.data
   return {
     props: {
       product, 

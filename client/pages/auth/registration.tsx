@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useState } from 'react'
 import RegistrationForm from '@/components/authentication/RegistrationForm'
-
+import api from '@/baseUrl'
 
 interface RegistrationResponse { 
   error?: string
@@ -20,7 +20,7 @@ export default function Registration() {
     phone_number: string,
     password: string
   ) => {
-    const res = await axios.post('http://localhost:3000/users', {
+    const res = await axios.post('http://localhost:8000/users', {
       first_name,
       last_name,
       address,

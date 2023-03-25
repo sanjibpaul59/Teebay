@@ -14,7 +14,7 @@ class ProductsController < ApplicationController
   end
 
  # Get /unsold_products
- def unsold_products
+  def unsold_products
     @products = Product.includes(:categories).unsold_and_available
     render json: @products.to_json(include: :categories)
   end

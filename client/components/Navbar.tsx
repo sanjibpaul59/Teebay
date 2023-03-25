@@ -1,9 +1,9 @@
 import {Navbar, Flex} from '@mantine/core'
 import Link from 'next/link'
-import { getCurrentUser } from '@/lib/getCurrentUser'
+import Cookies from 'js-cookie'
 
 export default function Navigation() {
-  const authenticatedUser = getCurrentUser()
+  const authenticatedUser = parseInt(Cookies.get('userId')!)
   return (
     <>
       <Navbar height={700} width={{ sm: 300 }} p="md">

@@ -14,12 +14,9 @@ import {
   NumberInput
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import Cookies from 'js-cookie'
 
-// type Category = {
-//   id: number
-//   category_name: string
-// }
-/* 
+/*
 TODOS:  
 1. Fetch categories from the server 
 2. Populate form with categories 
@@ -28,11 +25,12 @@ TODOS:
 const ProductAddForm = () => {
  const router = useRouter()
   const [ active, setActive ] = useState(0)
-  const userId = parseInt(localStorage.getItem('userId') || '0', 10)
+  const userId = parseInt(Cookies.get('userId')!)
+  // const userId = parseInt(localStorage.getItem('userId') || '0', 10)
   const [ categories, setCategories ] = useState<any[]>([])
     useEffect(() => {
     axios
-      .get('http://localhost:3000/categories')
+      .get('http://localhost:8000/categories')
       .then((response) => {
         setCategories(response.data)
       })
@@ -117,15 +115,9 @@ const ProductAddForm = () => {
       user_id: userId,
       category_ids: form.values.category_ids,
     }
-   const res = await fetch('http://localhost:3000/products', {
-     method: 'POST',
-     headers: {
-       'Content-Type': 'application/json',
-     },
-     body: JSON.stringify(requestBody),
-   })
+    const product_response = await axios.post('http://localhost:8000/products', requestBody)
 
-   if (res.ok) {
+   if (product_response.status === 201) {
      router.push('/products')
    } else {
      console.error('Error creating product')
@@ -179,16 +171,6 @@ const ProductAddForm = () => {
            <h3>Product Rent Type: {form.values.rent_type}</h3>
          </Container>
        </Stepper.Completed>
-       {/* <Stepper.Completed>
-     <Group position="center">
-      <Button color="violet" onClick={prevStep}>
-       Back
-      </Button>
-      <Button color="violet" type='submit' onClick={handleSubmit}>
-       Submit
-      </Button>
-     </Group>
-    </Stepper.Completed> */}
      </Stepper>
      <Group position="apart" m="xl">
        {active !== 0 && (

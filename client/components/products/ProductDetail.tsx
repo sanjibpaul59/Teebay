@@ -4,7 +4,7 @@ import capitalize from '@/lib/capitalize'
 import { modals } from '@mantine/modals'
 import { useState, useEffect } from 'react'
 import { DateInput, DatePickerInput } from '@mantine/dates'
-import { getCurrentUser } from '@/lib/getCurrentUser'
+import Cookies from 'js-cookie'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useDisclosure } from '@mantine/hooks'
@@ -19,10 +19,10 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
   const [rentFrom, setRentFrom] = useState<Date | null>(null)
   const [ rentTo, setRentTo ] = useState<Date | null>(null)
   const [opened, { open, close }] = useDisclosure(false)
-  const buyer = getCurrentUser()
+  const buyer = parseInt(Cookies.get('userId')!)
 
   async function handleProductBuy (){ 
-    const res = await axios.post('http://localhost:3000/transactions', {
+    const res = await axios.post('http://localhost:8000/transactions', {
       product_id: product.id,
       seller_id: product.user_id,
       buyer_id: buyer,
@@ -35,7 +35,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
     }
   }
   async function handleProductRent() { 
-    const res = await axios.post('http://localhost:3000/transactions', {
+    const res = await axios.post('http://localhost:8000/transactions', {
       product_id: product.id,
       seller_id: product.user_id,
       buyer_id: buyer,

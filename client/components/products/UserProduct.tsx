@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { modals } from '@mantine/modals'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import formattedDate from '@/lib/formatDate'
 
 interface UserProductProps {
   product: Product
@@ -21,9 +22,9 @@ interface UserProductProps {
 const UserProduct = ({ product }: UserProductProps) => {
   const router = useRouter()
   async function handleProductDelete() { 
-    const res = await axios.delete(`http://localhost:3000/products/${product.id}`)
+    const res = await axios.delete(`http://localhost:8000/products/${product.id}`)
     if(res.status === 204) {
-      router.push('/products/user-products')
+      router.push('/products')
     }
 
   }
@@ -82,6 +83,13 @@ const UserProduct = ({ product }: UserProductProps) => {
              illo ut quasi, blanditiis quam commodi atque quo.
            </TypographyStylesProvider>
          </Text>
+       </Group>
+
+       <Group position="apart">
+         <Text color="dimmed">
+           Date Posted: {formattedDate(product.created_at)}{' '}
+         </Text>
+         <Text color="dimmed"> Views Count </Text>
        </Group>
      </Card>
    </Container>

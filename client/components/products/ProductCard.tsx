@@ -9,6 +9,7 @@ import {
 } from '@mantine/core'
 
 import capitalize from "@/lib/capitalize"
+import formattedDate from "@/lib/formatDate"
 
 interface ProductCardProps { 
   product: Product
@@ -31,8 +32,8 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             .join(', ')}
         </Text>
         <Text fw={500} color="dimmed">
-          Price: ${+product.selling_price} | Rent: $
-          {product.rent_amount} {product.rent_type}
+          Price: ${+product.selling_price} | Rent: ${product.rent_amount}{' '}
+          {product.rent_type}
         </Text>
         <Group position="apart" mt="md" mb="xs">
           <Text size="sm" lineClamp={3}>
@@ -45,6 +46,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               non nam illo ut quasi, blanditiis quam commodi atque quo.
             </TypographyStylesProvider>
           </Text>
+        </Group>
+        <Group position="apart">
+          <Text color="dimmed">
+            Date Posted: {formattedDate(product.created_at)}{' '}
+          </Text>
+          <Text color='dimmed'> Views Count </Text>
         </Group>
       </Card>
     </Container>

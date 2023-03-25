@@ -23,8 +23,8 @@ const LoginForm = ({ onSubmit, error }: LoginFormProps) => {
 
  const loginForm = useForm({
    initialValues: {
-     email: 'alexander1@mail.com',
-     password: 'PassWhat??',
+     email: '',
+     password: '',
    },
    // Client-side Form validation
    validate: {
@@ -49,8 +49,6 @@ const LoginForm = ({ onSubmit, error }: LoginFormProps) => {
       </Title>
       <Container mt={20} size="30rem" mx="auto" align-content="center">
         <Card shadow="sm" padding="lg" withBorder>
-          {/* <Box maw={400} mx="auto"> */}
-          {/* <form onSubmit={loginForm.onSubmit(handleSubmit)}> */}
           <form onSubmit={handleSubmit}>
             <TextInput
               withAsterisk

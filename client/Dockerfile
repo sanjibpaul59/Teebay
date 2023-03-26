@@ -8,6 +8,8 @@ RUN npm install --save-dev typescript @types/react @types/node
 RUN npm install
 COPY . .
 
+RUN npm run build && npm prune --production
+
 EXPOSE 3000
 
 CMD ["npm", "run", "dev"]

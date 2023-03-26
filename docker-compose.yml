@@ -19,7 +19,7 @@ services:
     build: 
       context: ./backend
       dockerfile: Dockerfile
-    command: sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 8000 -b '0.0.0.0'"
+    command: sh -c "rm -f tmp/pids/server.pid && bundle exec rails db:migrate && bundle exec rails db:seed && bundle exec rails s -p 8000 -b '0.0.0.0'"
     environment:
       DATABASE_URL: postgres://postgres:password@db:5432/backend_development
       RAILS_ENV: development

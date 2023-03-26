@@ -15,13 +15,8 @@ To run the application use the following command
 ```bash
 docker compose up -d
 ```
-For database migration and seeding the following command is required
 
-```bash 
-docker compose run web rake db:migrate
-docker compose run web rake db:seed
-``` 
-First command is for database migration following the migration files and the second one is for seeding the database with some model attributes describe in `seeds.rb` file.
+Database migration and seeding database with sample data is handled in the docker compose file. 
 
 After successful build and container creation, please visit 
 
@@ -34,4 +29,5 @@ to see the client interface and visit
  ```
  docker compose ps
  docker compose logs <service name>
+ docker compose logs -f [for continous logs]
  ```

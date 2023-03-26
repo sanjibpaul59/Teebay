@@ -3,7 +3,7 @@ FROM node:18-alpine AS build
 
 WORKDIR /app
 COPY package*.json .
-RUN npm install next react react-dom
+RUN npm install next
 RUN npm install --save-dev typescript @types/react @types/node
 RUN npm install
 COPY . .

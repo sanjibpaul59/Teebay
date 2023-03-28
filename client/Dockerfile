@@ -5,6 +5,8 @@ WORKDIR /app
 
 COPY package*.json ./
 
+RUN npm install next@latest
+
 RUN npm install
 
 COPY . .

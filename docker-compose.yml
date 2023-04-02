@@ -15,7 +15,7 @@ services:
    networks:
       - test_net
  api:
-    container_name: rails-api
+    container_name: api
     build: 
       context: ./backend
       dockerfile: Dockerfile
@@ -33,15 +33,18 @@ services:
     networks:
       - test_net
  wui:
-   container_name: next-app
+   container_name: wui
    build:
       context: ./client
       dockerfile: Dockerfile
    volumes:
      - ./client:/app
+     - /app/node_modules
+   environment:
+     NODE_ENV: development
    restart: always
    ports:
-      - 3000:3000
+      - "3000:3000"
    depends_on:
       - api
    networks:

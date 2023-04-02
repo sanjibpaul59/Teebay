@@ -9,6 +9,7 @@ RUN apk add --update --no-cache \
 
 WORKDIR /app
 COPY Gemfile Gemfile.lock ./
+RUN gem install bundler:2.4.6
 RUN bundle install
 
 EXPOSE 8000

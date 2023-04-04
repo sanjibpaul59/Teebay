@@ -12,6 +12,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create user" do
     assert_difference("User.count") do
+      @user = User.new(
+        address: "Test address",
+        email: "test@email.com",
+        first_name: "Test",
+        last_name: "User",
+        password: "password",
+        phone_number: "1234567890"
+      )
       post users_url, params: { user: { address: @user.address, email: @user.email, first_name: @user.first_name, last_name: @user.last_name, password: @user.password, phone_number: @user.phone_number } }, as: :json
     end
 

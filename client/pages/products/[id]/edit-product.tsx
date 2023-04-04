@@ -1,7 +1,7 @@
 import { Container, Grid } from '@mantine/core'
 import ProductEditForm from '@/components/products/ProductEditForm'
 import Navigation from '@/components/Navbar'
-import axios from 'axios'
+import axiosClient from '@/utils/axiosClient'
 
 
 export default function EditProduct(product: any){
@@ -25,7 +25,7 @@ export default function EditProduct(product: any){
 export async function getServerSideProps(context: any) {
   const { params } = context
   const { id } = params
-  const res = await axios.get(`http://api:8000/products/${id}`)
+  const res = await axiosClient.get(`/products/${id}`)
   const product = await res.data
   return {
     props: {

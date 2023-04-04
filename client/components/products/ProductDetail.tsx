@@ -1,13 +1,13 @@
 import {Product} from '@/interfaces/Product'
-import { Card, Text, Button, Group, Space, Modal, Flex } from '@mantine/core'
-import capitalize from '@/lib/capitalize'
+import { Card, Text, Button, Group, Space, Modal } from '@mantine/core'
+import capitalize from '@/utils/capitalize'
 import { modals } from '@mantine/modals'
-import { useState, useEffect } from 'react'
-import { DateInput, DatePickerInput } from '@mantine/dates'
+import { useState } from 'react'
+import { DatePickerInput } from '@mantine/dates'
 import Cookies from 'js-cookie'
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useDisclosure } from '@mantine/hooks'
+import axiosClient from '@/utils/axiosClient'
 
 
 
@@ -22,7 +22,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
   const buyer = parseInt(Cookies.get('userId')!)
 
   async function handleProductBuy (){ 
-    const res = await axios.post('http://localhost:8000/transactions', {
+    const res = await axiosClient.post('/transactions', {
       product_id: product.id,
       seller_id: product.user_id,
       buyer_id: buyer,
@@ -35,7 +35,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
     }
   }
   async function handleProductRent() { 
-    const res = await axios.post('http://localhost:8000/transactions', {
+    const res = await axiosClient.post('/transactions', {
       product_id: product.id,
       seller_id: product.user_id,
       buyer_id: buyer,

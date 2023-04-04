@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import axios from 'axios'
-import capitalize from '@/lib/capitalize'
+import capitalize from '@/utils/capitalize'
 import {
   Stepper,
   Button,
@@ -15,6 +14,7 @@ import {
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import Cookies from 'js-cookie'
+import axiosClient from '@/utils/axiosClient'
 
 /*
 TODOS:  
@@ -29,8 +29,8 @@ const ProductAddForm = () => {
   // const userId = parseInt(localStorage.getItem('userId') || '0', 10)
   const [ categories, setCategories ] = useState<any[]>([])
     useEffect(() => {
-    axios
-      .get('http://localhost:8000/categories')
+    axiosClient
+      .get('/categories')
       .then((response) => {
         setCategories(response.data)
       })
@@ -115,7 +115,7 @@ const ProductAddForm = () => {
       user_id: userId,
       category_ids: form.values.category_ids,
     }
-    const product_response = await axios.post('http://localhost:8000/products', requestBody)
+    const product_response = await axiosClient.post('/products', requestBody)
 
    if (product_response.status === 201) {
      router.push('/products')

@@ -6,11 +6,11 @@ import {
   IconMoneybag,
 } from '@tabler/icons-react'
 import Navigation from '@/components/Navbar'
-import { Grid, Center, Tabs } from '@mantine/core'
-import axios from 'axios'
+import { Grid, Tabs } from '@mantine/core'
 import { useState, useEffect } from 'react'
 import { ProductCard } from '@/components/products/ProductCard'
 import Cookies from 'js-cookie'
+import axiosClient from '@/utils/axiosClient'
 
 const Transactions = () => {
   const [sold_products, setSoldProducts] = useState([])
@@ -19,10 +19,10 @@ const Transactions = () => {
   const [ lent_products, setLentProducts ] = useState([])
   const current_user = parseInt(Cookies.get('userId')!)
   useEffect(() => {
-    axios.get(`http://localhost:8000/users/${current_user}/sold_products`).then((response) => setSoldProducts(response.data) )
-    axios.get(`http://localhost:8000/users/${current_user}/bought_products`).then((response) => setBoughtProducts(response.data) )
-    axios.get(`http://localhost:8000/users/${current_user}/lent_products`).then((response) => setLentProducts(response.data) )
-    axios.get(`http://localhost:8000/users/${current_user}/borrowed_products`).then((response) => setBorrowedProducts(response.data) )
+    axiosClient.get(`/users/${current_user}/sold_products`).then((response) => setSoldProducts(response.data) )
+    axiosClient.get(`/users/${current_user}/bought_products`).then((response) => setBoughtProducts(response.data) )
+    axiosClient.get(`/users/${current_user}/lent_products`).then((response) => setLentProducts(response.data) )
+    axiosClient.get(`/users/${current_user}/borrowed_products`).then((response) => setBorrowedProducts(response.data) )
   },[])
 
   return (

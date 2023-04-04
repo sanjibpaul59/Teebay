@@ -1,10 +1,10 @@
-import axios from 'axios'
 import Head from 'next/head'
 import { ProductList } from '@/components/products/ProductList'
 import Cookies from 'js-cookie'
 import Navigation from '@/components/Navbar'
 import Unauthorized from '@/components/authentication/Unauthorized'
 import { Grid, Center } from '@mantine/core'
+import axiosClient from '@/utils/axiosClient'
 
 export default function Products({ products }: any) { 
   const authenticatedUser = parseInt(Cookies.get('userId')!)
@@ -34,6 +34,6 @@ export default function Products({ products }: any) {
 }
 
 export async function getServerSideProps() {
-  const res = await axios.get("http://api:8000/unsold_products")
+  const res = await axiosClient.get("/unsold_products")
   return { props: { products: res.data } }
 }

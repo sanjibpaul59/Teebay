@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import { Product } from '@/interfaces/Product'
 import { ProductCard } from './ProductCard'
-import { Center } from '@mantine/core'
 
 interface ProductListProps {
   products: Product[]

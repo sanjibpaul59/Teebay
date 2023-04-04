@@ -1,7 +1,6 @@
-import { Product } from '@/interfaces/Product'
 import { useForm } from '@mantine/form'
 import { forwardRef } from 'react'
-import capitalize from '@/lib/capitalize'
+import capitalize from '@/utils/capitalize'
 import {
   Container,
   TextInput,
@@ -19,9 +18,9 @@ import {
   CloseButton,
   Flex
 } from '@mantine/core'
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import axiosClient from '@/utils/axiosClient'
 
 type EditProductFormProps = {
   product: any
@@ -51,8 +50,8 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
   })
 
   useEffect(() => {
-    axios
-      .get('http://localhost:8000/categories')
+    axiosClient
+      .get('/categories')
       .then((response) => {
         setCategories(response.data)
         setSelectedCategories(editableProductCategories)
@@ -82,7 +81,7 @@ const ProductEditForm = ({ product }: EditProductFormProps) => {
     const { title, description, selling_price, rent_amount, rent_type } = editForm.values
     const updatedProduct = { title, description, selling_price, rent_amount, rent_type, category_ids: selectedCategories }
     
-    const res = await axios.put(`http://localhost:8000/products/${editableProduct.id}`, {product : updatedProduct})
+    const res = await axiosClient.put(`/products/${editableProduct.id}`, {product : updatedProduct})
     if (res.status === 200) {
       router.push({
         pathname: '/products/user-products',

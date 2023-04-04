@@ -8,8 +8,8 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Navigation from '@/components/Navbar'
 import Unauthorized from '@/components/authentication/Unauthorized'
-import axios from 'axios'
 import Cookies from 'js-cookie'
+import axiosClient from '@/utils/axiosClient'
 
 interface UserProductsProps { 
   products: Product[]
@@ -77,7 +77,7 @@ const UserProducts: NextPage<Props> = ({ products }) => {
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
-  const res = await axios.get("http://api:8000/products/")
+  const res = await axiosClient.get("/products/")
   console.log(res)
   const products = await res.data
 

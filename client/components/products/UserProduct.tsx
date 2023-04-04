@@ -8,12 +8,12 @@ import {
 } from '@mantine/core'
 import { MdDelete } from 'react-icons/md'
 import { Product } from '@/interfaces/Product'
-import capitalize from "@/lib/capitalize"
+import capitalize from "@/utils/capitalize"
 import Link from 'next/link'
 import { modals } from '@mantine/modals'
-import axios from 'axios'
 import { useRouter } from 'next/router'
-import formattedDate from '@/lib/formatDate'
+import formattedDate from '@/utils/formatDate'
+import axiosClient from '@/utils/axiosClient'
 
 interface UserProductProps {
   product: Product
@@ -22,7 +22,7 @@ interface UserProductProps {
 const UserProduct = ({ product }: UserProductProps) => {
   const router = useRouter()
   async function handleProductDelete() { 
-    const res = await axios.delete(`http://localhost:8000/products/${product.id}`)
+    const res = await axiosClient.delete(`/products/${product.id}`)
     if(res.status === 204) {
       router.push('/products')
     }
@@ -89,7 +89,7 @@ const UserProduct = ({ product }: UserProductProps) => {
          <Text color="dimmed">
            Date Posted: {formattedDate(product.created_at)}{' '}
          </Text>
-         <Text color="dimmed"> Views Count </Text>
+         <Text color="dimmed"> {product.view_count} views </Text>
        </Group>
      </Card>
    </Container>

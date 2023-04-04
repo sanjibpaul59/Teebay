@@ -8,8 +8,8 @@ import {
   TypographyStylesProvider,
 } from '@mantine/core'
 
-import capitalize from "@/lib/capitalize"
-import formattedDate from "@/lib/formatDate"
+import capitalize from "@/utils/capitalize"
+import formattedDate from "@/utils/formatDate"
 
 interface ProductCardProps { 
   product: Product
@@ -51,7 +51,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <Text color="dimmed">
             Date Posted: {formattedDate(product.created_at)}{' '}
           </Text>
-          <Text color='dimmed'> Views Count </Text>
+          <Text color='dimmed'> { product.view_count} views </Text>
         </Group>
       </Card>
     </Container>

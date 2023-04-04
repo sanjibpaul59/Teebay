@@ -10,4 +10,6 @@ class User < ApplicationRecord
  has_many :lent_products, through: :lent_transactions, source: :product
  has_many :borrowed_products, through: :borrowed_transactions, source: :product
 
+ validates :email, presence: true, uniqueness: {message: "Email already exists"}
+ validates :phone_number, presence: true, uniqueness: {message: "Phone number already exists"}
 end

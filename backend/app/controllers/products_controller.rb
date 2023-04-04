@@ -10,6 +10,8 @@ class ProductsController < ApplicationController
   # GET /products/1
   def show
     @product = Product.includes(:categories).find(params[:id])
+    @product.increment(:view_count)
+    @product.save
     render json: @product.to_json(include: :categories)
   end
 

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # Defines the root path route ("/")
   post '/login', to: 'sessions#create'
   get '/current_user', to: 'application#current_user_json'
   delete '/logout', to: 'sessions#destroy'
@@ -16,8 +18,4 @@ Rails.application.routes.draw do
   get "/unsold_products", to: "products#unsold_products"
   post '/products/:product_id/categories/:category_id', to: 'product_categories#create'
   patch '/products/:product_id/categories/:category_id', to: 'product_categories#update'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
 end

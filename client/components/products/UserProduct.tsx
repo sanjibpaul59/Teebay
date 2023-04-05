@@ -8,15 +8,26 @@ import {
 } from '@mantine/core'
 import { MdDelete } from 'react-icons/md'
 import { Product } from '@/interfaces/Product'
-import capitalize from "@/lib/capitalize"
+import capitalize from "@/utils/capitalize"
 import Link from 'next/link'
 import { modals } from '@mantine/modals'
+import { useRouter } from 'next/router'
+import formattedDate from '@/utils/formatDate'
+import axiosClient from '@/utils/axiosClient'
 
 interface UserProductProps {
   product: Product
 }
 
-const  UserProduct = ({product}: UserProductProps) => {
+const UserProduct = ({ product }: UserProductProps) => {
+  const router = useRouter()
+  async function handleProductDelete() { 
+    const res = await axiosClient.delete(`/products/${product.id}`)
+    if(res.status === 204) {
+      router.push('/products')
+    }
+
+  }
  return (
    <Container mt={20} size="40rem" mx="auto" align-content="center">
      <Card shadow="sm" padding="lg" withBorder>
@@ -44,7 +55,7 @@ const  UserProduct = ({product}: UserProductProps) => {
                cancelProps: { color: 'red' },
                confirmProps: { color: 'violet' },
                onCancel: () => console.log('Cancel'),
-               onConfirm: () => console.log('Confirmed'),
+               onConfirm: () => handleProductDelete(),
              })
            }
          >
@@ -58,7 +69,8 @@ const  UserProduct = ({product}: UserProductProps) => {
            .join(', ')}
        </Text>
        <Text fw={500} color="dimmed">
-         Price: BDT {product.selling_price}
+         Price: ${+product.selling_price} | Rent: ${product.rent_amount}{' '}
+         {product.rent_type}
        </Text>
        <Group position="apart" mt="md" mb="xs">
          <Text size="sm" lineClamp={3}>
@@ -71,6 +83,13 @@ const  UserProduct = ({product}: UserProductProps) => {
              illo ut quasi, blanditiis quam commodi atque quo.
            </TypographyStylesProvider>
          </Text>
+       </Group>
+
+       <Group position="apart">
+         <Text color="dimmed">
+           Date Posted: {formattedDate(product.created_at)}{' '}
+         </Text>
+         <Text color="dimmed"> {product.view_count} views </Text>
        </Group>
      </Card>
    </Container>

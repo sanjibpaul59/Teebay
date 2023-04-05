@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { MantineProvider } from '@mantine/core'
 import Head from 'next/head'
 import { ModalsProvider } from '@mantine/modals'
+import { Notifications } from '@mantine/notifications'
 
 
 export default function App(props: AppProps) {
@@ -28,9 +29,10 @@ export default function App(props: AppProps) {
         withGlobalStyles
         withNormalizeCSS
       >
-      <ModalsProvider>
+        <ModalsProvider>
+          <Notifications position="top-right" zIndex={2077} autoClose={4000} />
           <Component {...pageProps} />
-       </ModalsProvider>
+        </ModalsProvider>
       </MantineProvider>
     </>
   ) 

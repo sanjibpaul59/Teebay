@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import capitalize from '@/utils/capitalize'
 import {
   Stepper,
   Button,
@@ -12,10 +13,32 @@ import {
   NumberInput
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import Cookies from 'js-cookie'
+import axiosClient from '@/utils/axiosClient'
 
+/*
+TODOS:  
+1. Fetch categories from the server 
+2. Populate form with categories 
+3. Add product with categories
+*/
 const ProductAddForm = () => {
  const router = useRouter()
- const [ active, setActive ] = useState(0)
+  const [ active, setActive ] = useState(0)
+  const userId = parseInt(Cookies.get('userId')!)
+  // const userId = parseInt(localStorage.getItem('userId') || '0', 10)
+  const [ categories, setCategories ] = useState<any[]>([])
+    useEffect(() => {
+    axiosClient
+      .get('/categories')
+      .then((response) => {
+        setCategories(response.data)
+      })
+      .catch((error) => {
+        console.error('Error fetching categories:', error)
+      })
+
+  }, [])
  // initial values for product add form
  const form = useForm({
   initialValues: {
@@ -24,7 +47,7 @@ const ProductAddForm = () => {
    selling_price: '',
    rent_amount: '',
    rent_type: '',
-   categories: [],
+   category_ids: [],
   },
   validate: (values) => {
    if (active === 0) {
@@ -33,7 +56,7 @@ const ProductAddForm = () => {
     }
    }
    if (active === 1) {
-    if (!values.categories) {
+    if (!values.category_ids) {
      return { categories: 'Product categories is required' }
     }
    }
@@ -65,14 +88,19 @@ const ProductAddForm = () => {
    const prevStep = () =>
      setActive((current) => (current > 0 ? current - 1 : current))
   
-   const product_categories = [
-     { value: 'electronics', label: 'Electronics' },
-     { value: 'furniture', label: 'Furniture' },
-     { value: 'home appliances', label: 'Home Appliances' },
-     { value: 'sporting goods', label: 'Sporting Goods' },
-     { value: 'outdoor', label: 'Outdoor' },
-     { value: 'toys', label: 'Toys' },
-   ]
+   const product_categories = categories.map((category) => {
+    return {
+      label: capitalize(category.category_name),
+      value: category.id.toString(),
+    }
+   })
+  let labels = ""
+  if (form.values.category_ids.length > 0) { 
+    const categoryIds: string [] = form.values.category_ids
+    labels = product_categories
+          .filter(category => categoryIds.includes(category.value))
+      .map(category => category.label).join(', ')
+  }
   const rent_types = [
     { value: 'hourly', label: 'per hr' },
     { value: 'daily', label: 'per day' },
@@ -84,17 +112,12 @@ const ProductAddForm = () => {
       selling_price: form.values.selling_price,
       rent_amount: form.values.rent_amount,
       rent_type: form.values.rent_type,
-      user_id: 1,
+      user_id: userId,
+      category_ids: form.values.category_ids,
     }
-   const res = await fetch('http://localhost:3000/products', {
-     method: 'POST',
-     headers: {
-       'Content-Type': 'application/json',
-     },
-     body: JSON.stringify(requestBody),
-   })
+    const product_response = await axiosClient.post('/products', requestBody)
 
-   if (res.ok) {
+   if (product_response.status === 201) {
      router.push('/products')
    } else {
      console.error('Error creating product')
@@ -111,7 +134,7 @@ const ProductAddForm = () => {
          <MultiSelect
            mt={30}
            data={product_categories}
-           {...form.getInputProps('categories')}
+           {...form.getInputProps('category_ids')}
          />
        </Stepper.Step>
        <Stepper.Step label="Product Description">
@@ -141,23 +164,13 @@ const ProductAddForm = () => {
          <Container mt={30}>
            <h1>Summary</h1>
            <h3>Product Title: {form.values.title}</h3>
-           <h3>Product Categories: {form.values.categories}</h3>
+           <h3>Product Categories: {labels} </h3>
            <h3>Product Description: {form.values.description}</h3>
            <h3>Product Price: {form.values.selling_price}</h3>
            <h3>Product Rent Price: {form.values.rent_amount}</h3>
            <h3>Product Rent Type: {form.values.rent_type}</h3>
          </Container>
        </Stepper.Completed>
-       {/* <Stepper.Completed>
-     <Group position="center">
-      <Button color="violet" onClick={prevStep}>
-       Back
-      </Button>
-      <Button color="violet" type='submit' onClick={handleSubmit}>
-       Submit
-      </Button>
-     </Group>
-    </Stepper.Completed> */}
      </Stepper>
      <Group position="apart" m="xl">
        {active !== 0 && (

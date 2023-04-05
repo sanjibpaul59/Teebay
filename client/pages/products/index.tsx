@@ -1,24 +1,24 @@
-import axios from 'axios'
 import Head from 'next/head'
 import { ProductList } from '@/components/products/ProductList'
-import { getCurrentUser } from '@/lib/getCurrentUser'
+import Cookies from 'js-cookie'
 import Navigation from '@/components/Navbar'
 import Unauthorized from '@/components/authentication/Unauthorized'
 import { Grid, Center } from '@mantine/core'
+import axiosClient from '@/utils/axiosClient'
 
 export default function Products({ products }: any) { 
-  const authenticatedUser = getCurrentUser()
+  const authenticatedUser = parseInt(Cookies.get('userId')!)
   if (!authenticatedUser) { 
     return (
       <Unauthorized />
     )
   }
   return (
-    <div>
+    <>
       <Head>
-        <title>Products List</title>
+        <title>Products List | Teebay</title>
       </Head>
-      <Grid>
+      <Grid m={0}>
         <Grid.Col span="content">
           <Navigation />
         </Grid.Col>
@@ -29,12 +29,11 @@ export default function Products({ products }: any) {
           <ProductList products={products} />
         </Grid.Col>
       </Grid>
-    </div>
+    </>
   )
 }
 
 export async function getServerSideProps() {
-  const res = await axios.get("http://localhost:3000/products")
-  console.log(res.data)
+  const res = await axiosClient.get("/unsold_products")
   return { props: { products: res.data } }
 }

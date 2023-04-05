@@ -10,30 +10,16 @@ import {
   Anchor,
 } from '@mantine/core'
 
-import { useForm } from '@mantine/form'
 import Link from 'next/link'
 
 type LoginFormProps = {
   onSubmit: (email: string, password: string) => void
   error: string | null
+  loginForm: any
 }
 
 
-const LoginForm = ({ onSubmit, error }: LoginFormProps) => {
-
- const loginForm = useForm({
-   initialValues: {
-     email: 'alexander2@mail.com',
-     password: 'PassWhat??',
-   },
-   // Client-side Form validation
-   validate: {
-     email: (value: string) =>
-       /^\S+@\S+$/.test(value) ? null : 'Invalid email',
-     password: (value: string) =>
-       value.length < 6 ? 'Password must have at least 6 characters' : null,
-   },
- })
+const LoginForm = ({ onSubmit, error, loginForm }: LoginFormProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -49,24 +35,20 @@ const LoginForm = ({ onSubmit, error }: LoginFormProps) => {
       </Title>
       <Container mt={20} size="30rem" mx="auto" align-content="center">
         <Card shadow="sm" padding="lg" withBorder>
-          {/* <Box maw={400} mx="auto"> */}
-          {/* <form onSubmit={loginForm.onSubmit(handleSubmit)}> */}
           <form onSubmit={handleSubmit}>
             <TextInput
-              withAsterisk
               mt={30}
               required
               placeholder="Email"
               {...loginForm.getInputProps('email')}
             />
             <PasswordInput
-              withAsterisk
               mt={15}
               required
               placeholder="Password"
               {...loginForm.getInputProps('password')}
             />
-
+            {/* {error && <Text color="red" align='center' italic>{error}</Text>} */}
             <Group position="center" mt="xl">
               <Button type="submit" color="violet">
                 LOGIN
@@ -82,7 +64,6 @@ const LoginForm = ({ onSubmit, error }: LoginFormProps) => {
               </Anchor>
             </Link>
           </Text>
-          {error && <Text color="red">{error}</Text>}
         </Card>
       </Container>
     </Container>

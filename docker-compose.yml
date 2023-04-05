@@ -1,31 +1,58 @@
+version: '3'
+
 services:
-  db:
-    image: postgres
-    volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+ db: 
+   image: postgres
+   volumes:
+     - ./db:/var/lib/postgresql/data
+   environment:
+     POSTGRES_USER: postgres
+     POSTGRES_PASSWORD: password
+     POSTGRES_DB: backend_development
+   ports:
+     - "5432:5432"
+   restart: always
+   networks:
+      - test_net
+ api:
+    container_name: api
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: sh -c "rm -f tmp/pids/server.pid && bundle exec rails db:migrate && bundle exec rails s -p 8000 -b '0.0.0.0'"
     environment:
-      POSTGRES_PASSWORD: password
-  api:
+      DATABASE_URL: postgres://postgres:password@db:5432/backend_development
+      RAILS_ENV: development
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - test_net
+ wui:
+   container_name: wui
    build:
-    args:
-     - RAILS_ENV=development
-    context: backend
-    target: development
-   command: bash -c "rm -f /tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+      context: ./client
+      dockerfile: Dockerfile
    volumes:
-     - ./backend:/teebay/backend
+     - ./client:/app
+     - /app/node_modules
+   environment:
+     NODE_ENV: development
+   restart: always
    ports:
-    - "3000:3000"
+      - "3000:3000"
    depends_on:
-     - db
-  wui:
-   build:
-    context: client
-    target: development
-   ports:
-    - "3001:3000"
-   volumes:
-     - ./client/src:/teebay/client/src
-     - /teebay/client/node_modules
-   depends_on:
-    - api
+      - api
+   networks:
+     - test_net
+    
+networks:
+  test_net:
+    driver: bridge
+    attachable: true
+      
+   

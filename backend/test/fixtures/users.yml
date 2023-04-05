@@ -4,14 +4,14 @@ one:
   first_name: MyString
   last_name: MyString
   address: MyText
-  email: MyString
-  phone_number: MyString
-  password: MyString
+  email: alexander@gmail.com
+  phone_number: 01637535578
+  password: PassWhat??
 
 two:
   first_name: MyString
   last_name: MyString
   address: MyText
-  email: MyString
-  phone_number: MyString
-  password: MyString
+  email: alexander0@gmail.com
+  phone_number: 01835985285
+  password: PassWhat??

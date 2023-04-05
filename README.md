@@ -11,6 +11,7 @@ git clone git@github.com:sanjibpaul59/Teebay.git
 
 Move inside the directory using, `cd Teebay`
 
+
 To run the application use the following command 
 ```bash
 docker compose up -d

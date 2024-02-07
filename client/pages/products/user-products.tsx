@@ -67,9 +67,7 @@ const UserProducts: NextPage<Props> = ({ products }) => {
           </Flex>
         </Container>
           </Grid.Col>
-          </Grid>
-        
-        
+          </Grid>        
       </>
     )
   }
@@ -78,7 +76,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const res = await axiosClient.get("/products/")
-  console.log(res)
+  console.log(`Response ${res}`)
   const products = await res.data
 
   return {

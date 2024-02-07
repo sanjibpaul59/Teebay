@@ -7,22 +7,19 @@ interface ProductListProps {
   
 }
 
-export const ProductList = ({ products  }: ProductListProps) => {
+export const ProductList = ({ products }: ProductListProps) => {
+  if (products.length === 0) return <div>loading...</div>
   return (
     <>
       <Head>
         <title>Products List</title>
       </Head>
       <div>
-        {/* <Center h={100}>
-          <h1>ALL PRODUCTS</h1>
-        </Center> */}
-        {/* <ul> */}
-          {products.map((product: any) => (
-            <li key={product.id}>
-              <ProductCard product={product}  />
-             </li>
-          ))}
+        {products.map((product: any) => (
+          <li key={product.id}>
+            <ProductCard product={product} />
+          </li>
+        ))}
         {/* </ul> */}
       </div>
     </>

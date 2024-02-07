@@ -1,11 +1,12 @@
 # syntax=docker/dockerfile:1
 FROM node:18-alpine
 
-WORKDIR /app
+WORKDIR /client
 COPY package.json package-lock.json* ./
 RUN  npm ci
-COPY . .
-RUN npm run build && npm prune --production
+COPY . ./
+ENV NODE_ENV development
 ENV NEXT_TELEMETRY_DISABLED 1
+EXPOSE 3000
 
 CMD ["npm","run","dev"]
